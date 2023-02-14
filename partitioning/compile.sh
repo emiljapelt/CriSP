@@ -1,0 +1,1 @@
+gcc ./utils.c ./partitioning.c -o ./partitioning.exe
