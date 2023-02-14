@@ -1,39 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/random.h>
 
 #include "utils.h"
 
-struct partition_info partition_sequential(struct tuple input[], uint64 input_size, uint64 hash_cardinality) {
+struct partition_info partition_sequential(struct tuple input[], uint64 input_size, uint64 partition_count) {
     uint64 hashes[input_size];
-    int partition_sizes[hash_cardinality];
-    for(int i = 0; i < hash_cardinality; i++) partition_sizes[i] = 0;
+    int partition_sizes[partition_count];
+    for(int i = 0; i < partition_count; i++) partition_sizes[i] = 0;
     for(int i = 0; i < input_size; i++) {
-        hashes[i] = mult_hash(input[i].fst, hash_cardinality);
+        hashes[i] = hash(input[i].fst);
         partition_sizes[hashes[i]]++;
     }
 
-    struct tuple* partitions[hash_cardinality];
-    for(int i = 0; i < hash_cardinality; i++) {
+    struct tuple* partitions[partition_count];
+    for(int i = 0; i < partition_count; i++) {
         partitions[i] = malloc(16 * partition_sizes[i]);
     }
 
-    int partition_indecies[hash_cardinality];
-    for(int i = 0; i < hash_cardinality; i++) partition_indecies[i] = 0;
-
-// printf("inital indecies\n");
-//     for(int i = 0; i < hash_cardinality; i++) printf("%i\n", partition_indecies[i]);
-// printf("partition sizes\n");
-//     for(int i = 0; i < hash_cardinality; i++) printf("%i = %i\n", i, partition_sizes[i]);
-// printf("hashes\n");
-//     for(int i = 0; i < input_size; i++) printf("%llu\n", hashes[i]);
+    int partition_indecies[partition_count];
+    for(int i = 0; i < partition_count; i++) partition_indecies[i] = 0;
 
     for(int i = 0; i < input_size; i++) {
         uint64 hash = hashes[i];
         int partition_size = partition_sizes[hash];
         int partition_index = partition_indecies[hash];
-
-        printf("%llu, %i, %i\n", hash, partition_size, partition_index);
 
         partitions[hash][partition_index].fst = input[i].fst;
         partitions[hash][partition_index].snd = input[i].snd;
@@ -45,11 +37,12 @@ struct partition_info partition_sequential(struct tuple input[], uint64 input_si
     return result;
 }
 
-
 int main() {
-    init_utils();
     int problem_size = 100;
-    uint64 hash_cardinality = 10;
+    uint64 b = 2;
+    uint64 partition_count = 1 << b;
+
+    init_utils(partition_count);
 
     // Generate data
     struct tuple data[problem_size];
@@ -61,7 +54,7 @@ int main() {
     }
     
     // Calculate partitions
-    struct partition_info info = partition_sequential(data, problem_size, hash_cardinality);
+    struct partition_info info = partition_sequential(data, problem_size, partition_count);
 
     // Print
     printf("Input:\n");
@@ -70,7 +63,7 @@ int main() {
     }
 
     printf("Output:\n");
-    for(int i = 0; i < hash_cardinality; i++) {
+    for(int i = 0; i < partition_count; i++) {
         int partition_size = info.partition_sizes[i];
         struct tuple* partition = info.partitions[i];
         printf("Partition %i:\n", i);
