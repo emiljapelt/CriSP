@@ -1,0 +1,1 @@
+gcc ./utils.c ./partioning.c -o ./partioning.exe
