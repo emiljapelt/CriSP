@@ -19,14 +19,14 @@ void partition_sequential(uint64* input, uint64** output, uint64 start_index, ui
         partitions[hashes[i]]++;
     }
 
-    int partition_indecies[partition_count];
-    for(int i = 0; i < partition_count; i++) partition_indecies[i] = 0;
+    int partition_indices[partition_count];
+    for(int i = 0; i < partition_count; i++) partition_indices[i] = 0;
 
     for(uint64 i = 0; i < work_size; i++) {
         uint64 hash = hashes[i];
         uint64 section_offset = partition_count;
         for(int h = 0; h < hash; h++) section_offset += 2 * partitions[h];
-        uint64 partition_index = 2 * partition_indecies[hash]++;
+        uint64 partition_index = 2 * partition_indices[hash]++;
         partitions[section_offset + partition_index] = input[start_index+(2*i)];
         partitions[section_offset + partition_index + 1] = input[start_index+(2*i)+1];
     }
@@ -46,8 +46,16 @@ uint64* create_args(uint64* input, uint64** output, uint64 start_index, uint64 w
 
 void* call_partition_sequential(void* data) {
     uint64* args = (uint64*)data;
-    partition_sequential(*(uint64**)args, *(uint64***)(args+1), *(uint64*)(args+2), *(uint64*)(args+3), *(uint64*)(args+4));
+
+    uint64* input = *(uint64**)args;
+    uint64** output = *(uint64***)(args+1);
+    uint64 start_index = *(uint64*)(args+2);
+    uint64 work_size = *(uint64*)(args+3);
+    uint64 partition_count = *(uint64*)(args+4);
+
+    partition_sequential(input, output, start_index, work_size, partition_count);
     free(data);
+
     return NULL;
 }
 
@@ -77,8 +85,8 @@ void partition_individual_output(uint64* input, uint64** output, uint64 input_si
         for(int t = 0; t < threads; t++) partitions[i] += thread_buffers[t][i];
     }
 
-    int partition_indecies[partition_count];
-    for(int i = 0; i < partition_count; i++) partition_indecies[i] = 0;
+    int partition_indices[partition_count];
+    for(int i = 0; i < partition_count; i++) partition_indices[i] = 0;
 
     for(int t = 0; t < threads; t++) {
         for(int i = 0; i < partition_count; i++) {
@@ -89,7 +97,7 @@ void partition_individual_output(uint64* input, uint64** output, uint64 input_si
                 for(int p = 0; p < i; p++) section_offset += 2 * partitions[p];
 
             for(int s = 0; s < thread_partition_size; s++) {
-                int partition_index = 2 * partition_indecies[i]++;
+                int partition_index = 2 * partition_indices[i]++;
                 partitions[section_offset + partition_index] = thread_buffers[t][thread_partition_offset + (2*s)];
                 partitions[section_offset + partition_index + 1] = thread_buffers[t][thread_partition_offset + (2*s) + 1];
             }
@@ -123,7 +131,7 @@ int main() {
     //partition_individual_output(data, &partitions, problem_size, 4, partition_count);
 
 // Print
-    //print_partitions(partitions, partition_count, 1);
+    // print_partitions(partitions, partition_count, 1);
     print_partition_distribution(partitions, partition_count, 150);
-    //print_partition_statistic(partitions, partition_count);
+    print_partition_statistic(partitions, partition_count);
 }
