@@ -59,7 +59,7 @@ void* call_partition_sequential(void* data) {
     return NULL;
 }
 
-void partition_individual_output(uint64* input, uint64** output, uint64 input_size, uint64 threads, uint64 partition_count) {
+void partition_independant_output(uint64* input, uint64** output, uint64 input_size, uint64 threads, uint64 partition_count) {
 
     uint64* partitions = malloc((sizeof(uint64) * partition_count) + ((2 * sizeof(uint64)) * input_size));
 
@@ -127,8 +127,8 @@ int main() {
     
 // Calculate partitions
     uint64* partitions;
-    partition_sequential(data, &partitions, 0, problem_size, partition_count);
-    //partition_individual_output(data, &partitions, problem_size, 4, partition_count);
+    //partition_sequential(data, &partitions, 0, problem_size, partition_count);
+    partition_independant_output(data, &partitions, problem_size, 4, partition_count);
 
 // Print
     // print_partitions(partitions, partition_count, 1);
