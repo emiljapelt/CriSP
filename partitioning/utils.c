@@ -19,7 +19,7 @@ void print_partitions(uint64* partitions, int partition_count, char with_content
         uint64 partition_size = partitions[p];
         printf("# partition %d: [%lld]\n", p, partition_size);
         if (with_contents) for(int s = 0; s < partition_size; s++) {
-            printf("    %lld -> %lld\n",  partitions[offset+2*s], partitions[offset+(2*s)+1]);
+            printf("    %llu -> %lld\n",  partitions[offset+2*s], partitions[offset+(2*s)+1]);
         }
 
         offset += 2 * partition_size;
@@ -42,7 +42,7 @@ int decimal_digits(int number) {
 void print_partition_distribution(uint64* partitions, int partition_count, int levels) {
     printf("# distribution\n");
 
-    int pc = partition_count;
+    // int pc = partition_count;
     int max_digits = decimal_digits(partition_count-1);
 
     uint64 max_partition_size = partitions[0];
