@@ -7,8 +7,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <stdatomic.h>
-
-typedef unsigned long long uint64;
+#include "types.h"
 
 void *create_args(uint64 *input, uint64 **partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces)
 {
@@ -53,11 +52,11 @@ void *call_partition_concurrent(void *data)
 void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
 {
     int partition_count = pow(2, b);
-    int partition_size = (input_size + (partition_count - 1)) / partition_count;
+    int extra_buffer = input_size * 0.3;
+    int partition_size = (input_size + extra_buffer) / partition_count;
     int thread_section_size = (partition_size + (thread_count - 1)) / thread_count;
 
     pthread_mutex_t mutexes[partition_count];
-    // pthread_mutex_t *mutexes;
 
     uint64 write_indeces[partition_count];
     uint64 *partitions[partition_count];
@@ -76,9 +75,9 @@ void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64
         void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
-}
 
-int main()
-{
-    return 0;
+    for (int i = 0; i < thread_count; i++)
+    {
+        pthread_join(threads[i], NULL);
+    }
 }
