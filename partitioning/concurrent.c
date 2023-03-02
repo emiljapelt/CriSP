@@ -41,7 +41,7 @@ void *call_partition_concurrent(void *data)
         uint64 write_index = write_indeces[hash];
         partitions[hash][write_index] = input[start_index + (2 * i)];
         partitions[hash][write_index + 1] = input[start_index + (2 * i) + 1];
-        write_indeces[hash]++;
+        write_indeces[hash] += 2;
         pthread_mutex_unlock(&mutexes[hash]);
     }
     free(data);
@@ -52,7 +52,7 @@ void *call_partition_concurrent(void *data)
 void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
 {
     int partition_count = pow(2, b);
-    int extra_buffer = input_size * 0.3;
+    int extra_buffer = input_size * 1;
     int partition_size = (input_size + extra_buffer) / partition_count;
     int thread_section_size = (partition_size + (thread_count - 1)) / thread_count;
 
@@ -80,4 +80,21 @@ void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64
     {
         pthread_join(threads[i], NULL);
     }
+
+    for (int i = 0; i < partition_count; i++)
+    {
+        uint64 *curr = partitions[i];
+        while (curr != NULL)
+        {
+            printf("    %llu -> %lld\n", curr[0], curr[1]);
+            curr = curr + 2;
+        }
+    }
+}
+
+int main()
+{
+    uint64 input[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    partition_concurrent_output(2, input, 10, 2);
+    return 0;
 }
