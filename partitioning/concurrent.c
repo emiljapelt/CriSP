@@ -27,7 +27,7 @@ void *call_partition_concurrent(void *args)
 {
     uint64 *input = *(uint64 **)args;
     uint64 *partitions = *(uint64 **)(args + 1 * 8);
-    pthread_mutex_t *mutexes = (pthread_mutex_t *)(args + 2 * 8);
+    pthread_mutex_t *mutexes = *((pthread_mutex_t **)(args + 2 * 8));
     uint64 start_index = *(uint64 *)(args + 3 * 8);
     uint64 thread_section_size = *(uint64 *)(args + 4 * 8);
     uint64 partition_count = *(uint64 *)(args + 5 * 8);
@@ -37,14 +37,11 @@ void *call_partition_concurrent(void *args)
 
     for (uint64 i = 0; i < thread_section_size; i++)
     {
-        // uint64 hash = input[start_index + (2 * i)] % partition_count;
-        // uint64 hash = input[start_index + (2 * i)] % partition_count;
         uint64 hash = (start_index + i) % partition_count;
-        pthread_mutex_t *curr_mutex = mutexes + hash * sizeof(pthread_mutex_t);
-        pthread_mutex_lock(curr_mutex);
+        pthread_mutex_t curr_mutex = mutexes[hash];
+        pthread_mutex_lock(&curr_mutex);
         uint64 write_index = write_indeces[hash];
         uint64 *currRead = input + start_index + i;
-        // uint64 *currWrite = partitions + (hash * partition_size + write_indeces[hash]);
         uint64 partition_write_index = hash * partition_size + write_index;
         partitions[partition_write_index] = *currRead;
         // partitions[partition_write_index] = 11;
@@ -57,7 +54,7 @@ void *call_partition_concurrent(void *args)
         // *next = input + start_index + i + 1;
         // write_indeces[hash] += 2;
         write_indeces[hash] += 1;
-        pthread_mutex_unlock(curr_mutex);
+        pthread_mutex_unlock(&curr_mutex);
     }
     free(args);
 
@@ -71,21 +68,17 @@ void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64
     int partition_size = (input_size + extra_buffer) / partition_count;
     int thread_section_size = (partition_size + (thread_count - 1)) / thread_count;
 
-    // pthread_mutex_t mutexes[partition_count];
     pthread_mutex_t *mutexes = malloc(partition_count * sizeof(pthread_mutex_t));
 
-    // uint64 write_indeces[partition_count];
     uint64 *write_indeces = malloc(partition_count);
     uint64 bytes_to_allocate = partition_size * partition_count * sizeof(uint64);
     uint64 *partitions = malloc(bytes_to_allocate);
     pthread_t threads[thread_count];
 
-    // partitions[0] = 11;
-
     for (int i = 0; i < partition_count; i++)
     {
         write_indeces[i] = 0;
-        pthread_mutex_init(mutexes + i * sizeof(pthread_mutex_t), NULL);
+        pthread_mutex_init(&mutexes[i], NULL);
     }
 
     for (int i = 0; i < thread_count; i++)
@@ -99,6 +92,8 @@ void partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64
     {
         pthread_join(threads[i], NULL);
     }
+    free(mutexes);
+    free(write_indeces);
 
     // for (int i = 0; i < partition_count; i++)
     // {
