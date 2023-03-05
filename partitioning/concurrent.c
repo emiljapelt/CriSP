@@ -123,11 +123,11 @@ int main(int argc, char **argv)
         data[i] = *(uint64 *)&buffer;
     }
 
-    clock_t start, end;
-    start = clock();
+    struct timespec start, finish;
+    clock_gettime(CLOCK_MONOTONIC, &start);
     uint64 *partitions = partition_concurrent_output(b, data, problem_size, thread_count);
-    end = clock();
-    double cpu_time_used = ((double)(end - start)) * 1000 / CLOCKS_PER_SEC;
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+    int elapsed = finish.tv_nsec - start.tv_nsec;
 
     // for (int i = 0; i < partition_count; i++)
     // {
@@ -139,6 +139,6 @@ int main(int argc, char **argv)
     //     printf("\n");
     // }
 
-    printf("Completed in %f ms", cpu_time_used);
+    printf("Completed in %i ns\n", elapsed);
     return 0;
 }
