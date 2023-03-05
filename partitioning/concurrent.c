@@ -8,6 +8,7 @@
 #include <math.h>
 #include <stdatomic.h>
 #include "types.h"
+#include <time.h>
 
 int part_size;
 
@@ -104,10 +105,13 @@ uint64 *partition_concurrent_output(int b, uint64 *input, uint64 input_size, uin
     return partitions;
 }
 
-int main()
+int main(int argc, char **argv)
 {
-    int problem_size = 40;
-    uint64 b = 3;
+    // int problem_size = 40;
+    int problem_size = atoi(argv[1]);
+    // int b = 3;
+    int b = atoi(argv[2]);
+    int thread_count = atoi(argv[3]);
     uint64 partition_count = 1llu << b;
 
     // Generate data
@@ -119,15 +123,22 @@ int main()
         data[i] = *(uint64 *)&buffer;
     }
 
-    uint64 *partitions = partition_concurrent_output(b, data, problem_size, 4);
-    for (int i = 0; i < partition_count; i++)
-    {
-        printf("partition %i\n", i);
-        for (int j = 0; j < part_size; j++)
-        {
-            printf("%lli ", partitions[part_size * i + j]);
-        }
-        printf("\n");
-    }
+    clock_t start, end;
+    start = clock();
+    uint64 *partitions = partition_concurrent_output(b, data, problem_size, thread_count);
+    end = clock();
+    double cpu_time_used = ((double)(end - start)) * 1000 / CLOCKS_PER_SEC;
+
+    // for (int i = 0; i < partition_count; i++)
+    // {
+    //     printf("partition %i\n", i);
+    //     for (int j = 0; j < part_size; j++)
+    //     {
+    //         printf("%lli ", partitions[part_size * i + j]);
+    //     }
+    //     printf("\n");
+    // }
+
+    printf("Completed in %f ms", cpu_time_used);
     return 0;
 }
