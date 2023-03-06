@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "utils.h"
+#include "data_loader.h"
 
 void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_reports, uint64* input, uint64* output, uint64 start_index, uint64 work_size, uint64 partition_count, _Atomic uint64* counted) {
 
@@ -122,7 +123,8 @@ void partition_count_then_move(uint64* input, uint64** output, uint64 input_size
 
 int main() {
 // Setup
-    int problem_size = 100000;
+    uint64 problem_size;
+    load_problem_size(&problem_size);
     uint64 b = 4;
     uint64 partition_count = 1llu << b;
 
@@ -130,22 +132,23 @@ int main() {
 
 // Generate data
     uint64* data = malloc((2 * sizeof(uint64)) * problem_size);
-    char buffer[8];
-    for(int i = 0; i < problem_size; i++) {
-        getrandom(&buffer, 8, 0);
-        data[2*i] = *(uint64*)&buffer;
-        data[(2*i)+1] = i;
-    }
+    // char buffer[8];
+    // for(int i = 0; i < problem_size; i++) {
+    //     getrandom(&buffer, 8, 0);
+    //     data[2*i] = *(uint64*)&buffer;
+    //     data[(2*i)+1] = i;
+    // }
+    load_data(data);
     
 // Calculate partitions
     uint64* partitions;
     //partition_sequential(data, &partitions, 0, problem_size, partition_count);
-    partition_count_then_move(data, &partitions, problem_size, 1, partition_count);
+    // partition_count_then_move(data, &partitions, problem_size, 1, partition_count);
 
 // Print
     // print_partitions(partitions, partition_count, 1);
-    print_partition_distribution(partitions, partition_count, 100);
-    print_partition_statistic(partitions, partition_count);
+    // print_partition_distribution(partitions, partition_count, 100);
+    // print_partition_statistic(partitions, partition_count);
 
     free(data);
 }

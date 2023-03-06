@@ -1,0 +1,1 @@
+gcc ./data_loader_generator.c -o ./data_loader_generator.exe
