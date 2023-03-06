@@ -10,7 +10,13 @@
 #include "types.h"
 #include <time.h>
 
-int part_size;
+struct partition_data
+{
+    int partition_size;
+    int partition_count;
+    int thread_section_size;
+    uint64 *partitions;
+};
 
 void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
 {
@@ -44,7 +50,6 @@ void *call_partition_concurrent(void *args)
         if (start_index + i > input_size)
             break;
         uint64 *curr_read = input + start_index + i;
-        // uint64 hash = (start_index + i) % partition_count;
         uint64 hash = *(uint64 *)curr_read % partition_count;
         pthread_mutex_t curr_mutex = mutexes[hash];
         pthread_mutex_lock(&curr_mutex);
@@ -68,13 +73,12 @@ void *call_partition_concurrent(void *args)
     return NULL;
 }
 
-uint64 *partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
+struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
 {
     int partition_count = pow(2, b);
     int extra_buffer = input_size;
     int partition_size = (input_size + extra_buffer) / partition_count;
     int thread_section_size = (input_size + (thread_count - 1)) / thread_count;
-    part_size = partition_size;
 
     pthread_mutex_t *mutexes = malloc(partition_count * sizeof(pthread_mutex_t));
 
@@ -102,17 +106,29 @@ uint64 *partition_concurrent_output(int b, uint64 *input, uint64 input_size, uin
     }
     free(mutexes);
     free(write_indeces);
-    return partitions;
+    struct partition_data data = {partition_size, partition_count, thread_section_size, partitions};
+    return data;
 }
 
+void print_result(struct partition_data result)
+{
+    for (int i = 0; i < result.partition_count; i++)
+    {
+        printf("partition %i\n", i);
+        for (int j = 0; j < result.partition_size; j++)
+        {
+            printf("%lli ", result.partitions[result.partition_size * i + j]);
+        }
+        printf("\n");
+    }
+}
+
+// args: problem_size b threads_count
 int main(int argc, char **argv)
 {
-    // int problem_size = 40;
     int problem_size = atoi(argv[1]);
-    // int b = 3;
     int b = atoi(argv[2]);
     int thread_count = atoi(argv[3]);
-    uint64 partition_count = 1llu << b;
 
     // Generate data
     uint64 *data = malloc((sizeof(uint64)) * problem_size);
@@ -125,19 +141,11 @@ int main(int argc, char **argv)
 
     struct timespec start, finish;
     clock_gettime(CLOCK_MONOTONIC, &start);
-    uint64 *partitions = partition_concurrent_output(b, data, problem_size, thread_count);
+    struct partition_data result = partition_concurrent_output(b, data, problem_size, thread_count);
     clock_gettime(CLOCK_MONOTONIC, &finish);
     int elapsed = finish.tv_nsec - start.tv_nsec;
 
-    // for (int i = 0; i < partition_count; i++)
-    // {
-    //     printf("partition %i\n", i);
-    //     for (int j = 0; j < part_size; j++)
-    //     {
-    //         printf("%lli ", partitions[part_size * i + j]);
-    //     }
-    //     printf("\n");
-    // }
+    print_result(result);
 
     printf("Completed in %i ns\n", elapsed);
     return 0;
