@@ -18,6 +18,19 @@ struct partition_data
     uint64 *partitions;
 };
 
+struct concurrent_args
+{
+    uint64 *input;
+    uint64 *partitions;
+    uint64 *mutexes;
+    uint64 start_index;
+    uint64 thread_section_size;
+    uint64 partition_count;
+    uint64 *write_indeces;
+    uint64 partition_size;
+    uint64 input_size;
+};
+
 void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
 {
     uint64 *alloc = malloc(9 * sizeof(uint64));
