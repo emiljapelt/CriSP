@@ -115,14 +115,8 @@ void print_result(struct partition_data result)
     }
 }
 
-// args: problem_size b threads_count
-int main(int argc, char **argv)
+uint64 *generate_data(int problem_size)
 {
-    int problem_size = atoi(argv[1]);
-    int b = atoi(argv[2]);
-    int thread_count = atoi(argv[3]);
-
-    // Generate data
     uint64 *data = malloc((sizeof(uint64)) * problem_size * 2);
     char buffer[8];
     for (uint64 i = 0; i < problem_size; i++)
@@ -131,15 +125,32 @@ int main(int argc, char **argv)
         data[i * 2] = *(uint64 *)&buffer;
         data[i * 2 + 1] = i;
     }
+    return data;
+}
 
+// args: problem_size b thread_count
+long time_run(uint64 *data, int problem_size, int b, int thread_count)
+{
     struct timespec start, finish;
     clock_gettime(CLOCK_MONOTONIC, &start);
     struct partition_data result = partition_concurrent_output(b, data, problem_size, thread_count);
     clock_gettime(CLOCK_MONOTONIC, &finish);
-    int elapsed = finish.tv_nsec - start.tv_nsec;
+    long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
+    return elapsed_time_ms;
+}
 
-    print_result(result);
+int main(int argc, char **argv)
+{
+    int problem_size = atoi(argv[1]);
+    // int b = atoi(argv[2]);
+    int thread_count = atoi(argv[3]);
 
-    printf("Completed in %i ns\n", elapsed);
+    uint64 *data = generate_data(problem_size);
+    printf("GO!\n");
+
+    for (int b = 1; b <= 18; b++)
+    {
+        printf("%i %ld\n", b, time_run(data, problem_size, b, thread_count));
+    }
     return 0;
 }
