@@ -45,27 +45,19 @@ void *call_partition_concurrent(void *args)
     uint64 partition_size = *(uint64 *)(args + 7 * 8);
     uint64 input_size = *(uint64 *)(args + 8 * 8);
 
-    for (uint64 i = 0; i < thread_section_size; i++)
+    for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
-        if (start_index + i > input_size)
+        if (start_index + i > input_size * 2)
             break;
-        uint64 *curr_read = input + start_index + i;
-        uint64 hash = *(uint64 *)curr_read % partition_count;
+        uint64 *curr_read = input + start_index + i * 2;
+        uint64 hash = *((uint64 *)curr_read) % partition_count;
         pthread_mutex_t curr_mutex = mutexes[hash];
         pthread_mutex_lock(&curr_mutex);
         uint64 write_index = write_indeces[hash];
         uint64 partition_write_index = hash * partition_size + write_index;
         partitions[partition_write_index] = *curr_read;
-        // partitions[partition_write_index] = 11;
-        // partitions[0] = 11;
-        // uint64 *next = currWrite + 1;
-
-        // *curr = input[start_index + (2 * i)];
-        // *currWrite = *currRead;
-        // *next = input[start_index + (2 * i) + 1];
-        // *next = input + start_index + i + 1;
-        // write_indeces[hash] += 2;
-        write_indeces[hash] += 1;
+        partitions[partition_write_index + 1] = *(curr_read + 1);
+        write_indeces[hash] += 2;
         pthread_mutex_unlock(&curr_mutex);
     }
     free(args);
@@ -77,8 +69,8 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
 {
     int partition_count = pow(2, b);
     int extra_buffer = input_size;
-    int partition_size = (input_size + extra_buffer) / partition_count;
-    int thread_section_size = (input_size + (thread_count - 1)) / thread_count;
+    int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
+    int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
 
     pthread_mutex_t *mutexes = malloc(partition_count * sizeof(pthread_mutex_t));
 
@@ -131,12 +123,13 @@ int main(int argc, char **argv)
     int thread_count = atoi(argv[3]);
 
     // Generate data
-    uint64 *data = malloc((sizeof(uint64)) * problem_size);
+    uint64 *data = malloc((sizeof(uint64)) * problem_size * 2);
     char buffer[8];
-    for (int i = 0; i < problem_size; i++)
+    for (uint64 i = 0; i < problem_size; i++)
     {
         getrandom(&buffer, 8, 0);
-        data[i] = *(uint64 *)&buffer;
+        data[i * 2] = *(uint64 *)&buffer;
+        data[i * 2 + 1] = i;
     }
 
     struct timespec start, finish;
