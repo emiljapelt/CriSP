@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <stdatomic.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "utils.h"
 
@@ -120,15 +121,7 @@ void partition_count_then_move(uint64* input, uint64** output, uint64 input_size
     *output = partitions;
 }
 
-int main() {
-// Setup
-    int problem_size = 100000;
-    uint64 b = 4;
-    uint64 partition_count = 1llu << b;
-
-    init_utils(partition_count);
-
-// Generate data
+void generate_data_linear(uint64** target, uint64 problem_size) {
     uint64* data = malloc((2 * sizeof(uint64)) * problem_size);
     char buffer[8];
     for(int i = 0; i < problem_size; i++) {
@@ -136,10 +129,34 @@ int main() {
         data[2*i] = *(uint64*)&buffer;
         data[(2*i)+1] = i;
     }
-    
+    *target = data;
+}
+
+void generate_data_random(uint64** target, uint64 problem_size) {
+    uint64 bytes_count = (2 * sizeof(uint64)) * problem_size;
+    *target = (uint64*)malloc(bytes_count);
+    getrandom(*(char**)target, bytes_count, 0);
+}
+
+int main() {
+// Setup
+    int problem_size = 10000000;
+    uint64 b = 4;
+    uint64 partition_count = 1llu << b;
+
+    init_utils(partition_count);
+
+// Generate data
+    uint64* data;
+    struct timespec start, finish;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    generate_data_random(&data, problem_size);
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+    long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
+    printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
+
 // Calculate partitions
     uint64* partitions;
-    //partition_sequential(data, &partitions, 0, problem_size, partition_count);
     partition_count_then_move(data, &partitions, problem_size, 1, partition_count);
 
 // Print
