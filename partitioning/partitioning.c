@@ -90,7 +90,6 @@ int main() {
 
     // benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "lots_of_data_concurrent.csv", 4, 18, 32);
     benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "lots_of_data_countmove.csv", 2, 5, 16);
-    partition_count_then_move(data, problem_size, 16, partition_count);
 // // Time count-then-move
 //     long elapsed_time;
 //     for (int run = 1; run <= 18; run++) {
