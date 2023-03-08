@@ -7,17 +7,11 @@
 #include <unistd.h>
 #include <math.h>
 #include <stdatomic.h>
-#include "types.h"
 #include <time.h>
 #include <string.h>
 
-struct partition_data
-{
-    int partition_size;
-    int partition_count;
-    int thread_section_size;
-    uint64 *partitions;
-};
+#include "types.h"
+#include "concurrent.h"
 
 struct concurrent_args
 {
@@ -32,7 +26,7 @@ struct concurrent_args
     uint64 input_size;
 };
 
-void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
+void *create_args_concurrent(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
 {
     uint64 *alloc = malloc(9 * sizeof(uint64));
     alloc[0] = (uint64)input;
@@ -77,9 +71,8 @@ void *call_partition_concurrent(void *args)
     return NULL;
 }
 
-struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
+struct partition_info partition_concurrent_output(uint64 *input, uint64 input_size, uint64 thread_count, uint64 partition_count)
 {
-    int partition_count = pow(2, b);
     int extra_buffer = input_size * 0.1;
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
@@ -115,34 +108,13 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
     // for (int i = 0; i < partition_count; i++) {
     //     printf("% i %lld\n", i, write_indeces[i]);
     // }
-    free(write_indeces);
-    struct partition_data data = {partition_size, partition_count, thread_section_size, partitions};
-    return data;
-}
+    // free(write_indeces);
 
-void print_result(struct partition_data result)
-{
-    for (int i = 0; i < result.partition_count; i++)
+    for (int i = 0; i < partition_count; i++)
     {
-        printf("partition %i\n", i);
-        for (int j = 0; j < result.partition_size; j++)
-        {
-            printf("%lli ", result.partitions[result.partition_size * i + j]);
-        }
-        printf("\n");
+        write_indeces[i] = write_indeces[i] / 2;
     }
-}
-
-uint64 *generate_data(int problem_size)
-{
-    uint64 *data = malloc((sizeof(uint64)) * problem_size * 2);
-    char buffer[8];
-    for (uint64 i = 0; i < problem_size; i++)
-    {
-        getrandom(&buffer, 8, 0);
-        data[i * 2] = *(uint64 *)&buffer;
-        data[i * 2 + 1] = i;
-    }
+    struct partition_info data = { partitions, write_indeces };
     return data;
 }
 
@@ -177,17 +149,3 @@ void benchmark_all_combinations(uint64 *data, int problem_size, char *out_file_n
     }
 }
 
-int main(int argc, char **argv)
-{
-    int problem_size = atoi(argv[1]);
-    // int b = atoi(argv[2]);
-    int thread_count = atoi(argv[3]);
-
-    uint64 *data = generate_data(problem_size);
-    printf("GO!\n");
-    // for (int t = 1; t <=32; t *= 2) {
-    //     printf("%i %ld\n", t, time_run(data, problem_size, 10, t));
-    // }
-    benchmark_all_combinations(data, problem_size, "bench_run.csv");
-    return 0;
-}
