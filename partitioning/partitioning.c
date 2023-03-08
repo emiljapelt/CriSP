@@ -83,13 +83,17 @@ int main() {
     uint64* data;
     struct timespec start, finish;
     clock_gettime(CLOCK_MONOTONIC, &start);
-    generate_data_random(&data, problem_size);
+    generate_data(&data, problem_size);
     clock_gettime(CLOCK_MONOTONIC, &finish);
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
-    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "lots_of_data_concurrent.csv", 4, 18, 32);
-    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "lots_of_data_countmove.csv", 4, 18, 32);
+
+    // benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "lots_of_data_concurrent.csv", 4, 18, 32);
+    // benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "lots_of_data_countmove.csv", 4, 18, 32);
+    struct partition_info result = partition_count_then_move(data, problem_size, 1, partition_count);
+    print_partitions(result, partition_count, 0);
+    print_partition_distribution(result, partition_count, 20);
 // // Time count-then-move
 //     long elapsed_time;
 //     for (int run = 1; run <= 18; run++) {
