@@ -8,6 +8,7 @@
 #include <math.h>
 #include <stdatomic.h>
 #include <time.h>
+#include <string.h>
 
 #include "types.h"
 #include "concurrent.h"
@@ -54,8 +55,6 @@ void *call_partition_concurrent(void *args)
 
     for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
-        if (start_index + i > input_size * 2)
-            break;
         uint64 *curr_read = input + start_index + i * 2;
         uint64 hash = *((uint64 *)curr_read) % partition_count;
         pthread_mutex_t curr_mutex = mutexes[hash];
@@ -94,10 +93,10 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     for (int i = 0; i < thread_count; i++)
     {
         uint64 start_index = i * thread_section_size;
-        // if (i == thread_count - 1) {
-        //     thread_section_size = input_size - start_index - 1;
-        // }
-        void *args = create_args_concurrent(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
+        if (i == thread_count - 1) {
+            thread_section_size = (input_size * 2) - start_index;
+        }
+        void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
 
@@ -118,3 +117,35 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     struct partition_info data = { partitions, write_indeces };
     return data;
 }
+
+// args: problem_size b thread_count
+long time_run(uint64 *data, int problem_size, int b, int thread_count)
+{
+    struct timespec start, finish;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    struct partition_data result = partition_concurrent_output(b, data, problem_size, thread_count);
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+    free(result.partitions);
+    long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
+    return elapsed_time_ms;
+}
+
+void benchmark_all_combinations(uint64 *data, int problem_size, char *out_file_name) {
+    FILE *fp;
+    fp = fopen(out_file_name, "w");
+    fprintf(fp, " ,1,2,4,8,16,32\n");
+    for (int b = 1; b <= 18; b++) {
+        char gathered_data[1024] = "";
+        sprintf(gathered_data, "%i", b);
+        for (int t = 1; t <= 32; t *= 2) {
+            strcat(gathered_data, ",");
+            long time = time_run(data, problem_size, b, t);
+            char as_string[10];
+            sprintf(as_string, "%ld", time);
+            strcat(gathered_data, as_string);
+        }
+        strcat(gathered_data, "\n");
+        fprintf(fp, "%s", gathered_data);
+    }
+}
+
