@@ -60,8 +60,6 @@ void *call_partition_concurrent(void *args)
 
     for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
-        if (start_index + i > input_size * 2)
-            break;
         uint64 *curr_read = input + start_index + i * 2;
         uint64 hash = *((uint64 *)curr_read) % partition_count;
         pthread_mutex_t curr_mutex = mutexes[hash];
@@ -101,9 +99,9 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
     for (int i = 0; i < thread_count; i++)
     {
         uint64 start_index = i * thread_section_size;
-        // if (i == thread_count - 1) {
-        //     thread_section_size = input_size - start_index - 1;
-        // }
+        if (i == thread_count - 1) {
+            thread_section_size = (input_size * 2) - start_index;
+        }
         void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
