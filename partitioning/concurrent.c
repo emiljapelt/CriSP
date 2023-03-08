@@ -81,7 +81,7 @@ void *call_partition_concurrent(void *args)
 struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
 {
     int partition_count = pow(2, b);
-    int extra_buffer = input_size;
+    int extra_buffer = input_size * 0.1;
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
 
@@ -101,6 +101,9 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
     for (int i = 0; i < thread_count; i++)
     {
         uint64 start_index = i * thread_section_size;
+        // if (i == thread_count - 1) {
+        //     thread_section_size = input_size - start_index - 1;
+        // }
         void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
@@ -110,6 +113,9 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
         pthread_join(threads[i], NULL);
     }
     free(mutexes);
+    // for (int i = 0; i < partition_count; i++) {
+    //     printf("% i %lld\n", i, write_indeces[i]);
+    // }
     free(write_indeces);
     struct partition_data data = {partition_size, partition_count, thread_section_size, partitions};
     return data;
@@ -160,7 +166,9 @@ int main(int argc, char **argv)
 
     uint64 *data = generate_data(problem_size);
     printf("GO!\n");
-
+    // for (int t = 1; t <=32; t *= 2) {
+    //     printf("%i %ld\n", t, time_run(data, problem_size, 10, t));
+    // }
     for (int b = 1; b <= 18; b++)
     {
         printf("%i %ld\n", b, time_run(data, problem_size, b, thread_count));
