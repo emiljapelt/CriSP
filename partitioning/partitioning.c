@@ -138,9 +138,19 @@ void generate_data_random(uint64** target, uint64 problem_size) {
     getrandom(*(char**)target, bytes_count, 0);
 }
 
+long time_run(uint64* partitions, uint64 *data, int problem_size, int b, int thread_count) {
+    struct timespec start, finish;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+    uint64 partition_count = 1llu << b;
+    partition_count_then_move(data, &partitions, problem_size, thread_count, partition_count);
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+    long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
+    return elapsed_time_ms;
+}
+
 int main() {
 // Setup
-    int problem_size = 10000000;
+    int problem_size = 16777216;
     uint64 b = 4;
     uint64 partition_count = 1llu << b;
 
@@ -155,14 +165,23 @@ int main() {
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
-// Calculate partitions
-    uint64* partitions;
-    partition_count_then_move(data, &partitions, problem_size, 1, partition_count);
+    for (int bruh = 1; bruh <= 18; bruh++) {
+    	uint64* partitions;
+     	uint64 partition_count = 1llu << bruh;
+        init_utils(partition_count);
+     	print_partition_distribution(partitions, partition_count, 100);
+        long time = time_run(partitions, data, problem_size, bruh, 32);
+        printf("%i %ld\n", bruh, time);
+    }
 
-// Print
-    // print_partitions(partitions, partition_count, 1);
-    print_partition_distribution(partitions, partition_count, 100);
-    print_partition_statistic(partitions, partition_count);
+// // Calculate partitions
+//     uint64* partitions;
+//     partition_count_then_move(data, &partitions, problem_size, 1, partition_count);
+
+// // Print
+//     // print_partitions(partitions, partition_count, 1);
+//     print_partition_distribution(partitions, partition_count, 100);
+//     print_partition_statistic(partitions, partition_count);
 
     free(data);
 }
