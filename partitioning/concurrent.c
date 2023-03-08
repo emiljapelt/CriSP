@@ -9,6 +9,7 @@
 #include <stdatomic.h>
 #include "types.h"
 #include <time.h>
+#include <string.h>
 
 struct partition_data
 {
@@ -152,8 +153,28 @@ long time_run(uint64 *data, int problem_size, int b, int thread_count)
     clock_gettime(CLOCK_MONOTONIC, &start);
     struct partition_data result = partition_concurrent_output(b, data, problem_size, thread_count);
     clock_gettime(CLOCK_MONOTONIC, &finish);
+    free(result.partitions);
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     return elapsed_time_ms;
+}
+
+void benchmark_all_combinations(uint64 *data, int problem_size, char *out_file_name) {
+    FILE *fp;
+    fp = fopen(out_file_name, "w");
+    fprintf(fp, " ,1,2,4,8,16,32\n");
+    for (int b = 1; b <= 18; b++) {
+        char gathered_data[1024] = "";
+        sprintf(gathered_data, "%i", b);
+        for (int t = 1; t <= 32; t *= 2) {
+            strcat(gathered_data, ",");
+            long time = time_run(data, problem_size, b, t);
+            char as_string[10];
+            sprintf(as_string, "%ld", time);
+            strcat(gathered_data, as_string);
+        }
+        strcat(gathered_data, "\n");
+        fprintf(fp, "%s", gathered_data);
+    }
 }
 
 int main(int argc, char **argv)
@@ -167,9 +188,6 @@ int main(int argc, char **argv)
     // for (int t = 1; t <=32; t *= 2) {
     //     printf("%i %ld\n", t, time_run(data, problem_size, 10, t));
     // }
-    for (int b = 1; b <= 18; b++)
-    {
-        printf("%i %ld\n", b, time_run(data, problem_size, b, thread_count));
-    }
+    benchmark_all_combinations(data, problem_size, "bench_run.csv");
     return 0;
 }
