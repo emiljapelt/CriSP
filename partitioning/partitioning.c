@@ -24,6 +24,7 @@ long time_run(int algorithm, uint64 *data, int problem_size, uint64 partition_co
             clock_gettime(CLOCK_MONOTONIC, &finish);
             break;
         case COUNT_THEN_MOVE:
+            init_utils(partition_count);
             clock_gettime(CLOCK_MONOTONIC, &start);
             result = partition_count_then_move(data, problem_size, thread_count, partition_count);
             clock_gettime(CLOCK_MONOTONIC, &finish);
@@ -87,8 +88,8 @@ int main() {
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
-    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "lots_of_data_concurrent.csv", 4, 18, 32);
-    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "lots_of_data_countmove.csv", 4, 18, 32);
+    // benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "lots_of_data_concurrent.csv", 4, 18, 32);
+    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "lots_of_data_countmove.csv", 2, 5, 16);
     partition_count_then_move(data, problem_size, 16, partition_count);
 // // Time count-then-move
 //     long elapsed_time;
