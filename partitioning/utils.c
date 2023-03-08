@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "utils.h"
+#include "types.h"
 
 uint64 hash_cardinality;
 
@@ -13,16 +14,17 @@ uint64 hash(uint64 input) {
     return input % hash_cardinality;
 }
 
-void print_partitions(uint64* partitions, int partition_count, char with_contents) {
-    uint64 offset = partition_count;
+void print_partitions(struct partition_info info, int partition_count, char with_contents) {
+    uint64 offset = 0;
     for(int p = 0; p < partition_count; p++) {
-        uint64 partition_size = partitions[p];
+        uint64 partition_size = info.partition_sizes[p];
         printf("# partition %d: [%lld]\n", p, partition_size);
         if (with_contents) for(int s = 0; s < partition_size; s++) {
-            printf("    %llu -> %lld\n",  partitions[offset+2*s], partitions[offset+(2*s)+1]);
+            printf("    %llu -> %lld\n",  info.partitions[offset+2*s], info.partitions[offset+(2*s)+1]);
         }
 
         offset += 2 * partition_size;
+        while(info.partitions[offset] == 0) offset += 2;
     }
 }
 
@@ -39,17 +41,17 @@ int decimal_digits(int number) {
     return digits;
 }
 
-void print_partition_distribution(uint64* partitions, int partition_count, int levels) {
+void print_partition_distribution(struct partition_info info, int partition_count, int levels) {
     printf("# distribution\n");
 
     // int pc = partition_count;
     int max_digits = decimal_digits(partition_count-1);
 
-    uint64 max_partition_size = partitions[0];
-    for(int i = 1; i < partition_count; i++) if (partitions[i] > max_partition_size) max_partition_size = partitions[i];
+    uint64 max_partition_size = info.partition_sizes[0];
+    for(int i = 1; i < partition_count; i++) if (info.partition_sizes[i] > max_partition_size) max_partition_size = info.partition_sizes[i];
     double level_size = ((double)max_partition_size) / levels;
     for(int p = 0; p < partition_count; p++) {
-        uint64 partition_level = (uint64)(partitions[p] / level_size);
+        uint64 partition_level = (uint64)(info.partition_sizes[p] / level_size);
         int extra_spacing = max_digits - decimal_digits(p);
         printf("%i", p);
         printf(": ");
@@ -59,18 +61,18 @@ void print_partition_distribution(uint64* partitions, int partition_count, int l
     }
 }
 
-void print_partition_statistic(uint64* partitions, int partition_count) {
+void print_partition_statistic(struct partition_info info, int partition_count) {
     printf("# statistics\n");
 
-    uint64 max_partition_size = partitions[0];
-    for(int i = 1; i < partition_count; i++) if (partitions[i] > max_partition_size) max_partition_size = partitions[i];
-    uint64 min_partition_size = partitions[0];
-    for(int i = 1; i < partition_count; i++) if (partitions[i] < min_partition_size) min_partition_size = partitions[i];
+    uint64 max_partition_size = info.partition_sizes[0];
+    for(int i = 1; i < partition_count; i++) if (info.partition_sizes[i] > max_partition_size) max_partition_size = info.partition_sizes[i];
+    uint64 min_partition_size = info.partition_sizes[0];
+    for(int i = 1; i < partition_count; i++) if (info.partition_sizes[i] < min_partition_size) min_partition_size = info.partition_sizes[i];
     uint64 size_sum = 0;
-    for(int i = 0; i < partition_count; i++) size_sum += partitions[i];
+    for(int i = 0; i < partition_count; i++) size_sum += info.partition_sizes[i];
     double expected_average = (double)size_sum/partition_count;
     double deviation_sum = 0;
-    for(int i = 0; i < partition_count; i++) deviation_sum += abs(expected_average - partitions[i]);
+    for(int i = 0; i < partition_count; i++) deviation_sum += abs(expected_average - info.partition_sizes[i]);
 
     printf("sum: %lld\n", size_sum);
     printf("max: %lld\n", max_partition_size);

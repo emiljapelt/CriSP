@@ -7,16 +7,10 @@
 #include <unistd.h>
 #include <math.h>
 #include <stdatomic.h>
-#include "types.h"
 #include <time.h>
 
-struct partition_data
-{
-    int partition_size;
-    int partition_count;
-    int thread_section_size;
-    uint64 *partitions;
-};
+#include "types.h"
+#include "concurrent.h"
 
 struct concurrent_args
 {
@@ -31,7 +25,7 @@ struct concurrent_args
     uint64 input_size;
 };
 
-void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
+void *create_args_concurrent(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
 {
     uint64 *alloc = malloc(9 * sizeof(uint64));
     alloc[0] = (uint64)input;
@@ -78,9 +72,8 @@ void *call_partition_concurrent(void *args)
     return NULL;
 }
 
-struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 input_size, uint64 thread_count)
+struct partition_info partition_concurrent_output(uint64 *input, uint64 input_size, uint64 thread_count, uint64 partition_count)
 {
-    int partition_count = pow(2, b);
     int extra_buffer = input_size * 0.1;
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
@@ -104,7 +97,7 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
         // if (i == thread_count - 1) {
         //     thread_section_size = input_size - start_index - 1;
         // }
-        void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
+        void *args = create_args_concurrent(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
 
@@ -116,62 +109,12 @@ struct partition_data partition_concurrent_output(int b, uint64 *input, uint64 i
     // for (int i = 0; i < partition_count; i++) {
     //     printf("% i %lld\n", i, write_indeces[i]);
     // }
-    free(write_indeces);
-    struct partition_data data = {partition_size, partition_count, thread_section_size, partitions};
+    // free(write_indeces);
+
+    for (int i = 0; i < partition_count; i++)
+    {
+        write_indeces[i] = write_indeces[i] / 2;
+    }
+    struct partition_info data = { partitions, write_indeces };
     return data;
-}
-
-void print_result(struct partition_data result)
-{
-    for (int i = 0; i < result.partition_count; i++)
-    {
-        printf("partition %i\n", i);
-        for (int j = 0; j < result.partition_size; j++)
-        {
-            printf("%lli ", result.partitions[result.partition_size * i + j]);
-        }
-        printf("\n");
-    }
-}
-
-uint64 *generate_data(int problem_size)
-{
-    uint64 *data = malloc((sizeof(uint64)) * problem_size * 2);
-    char buffer[8];
-    for (uint64 i = 0; i < problem_size; i++)
-    {
-        getrandom(&buffer, 8, 0);
-        data[i * 2] = *(uint64 *)&buffer;
-        data[i * 2 + 1] = i;
-    }
-    return data;
-}
-
-// args: problem_size b thread_count
-long time_run(uint64 *data, int problem_size, int b, int thread_count)
-{
-    struct timespec start, finish;
-    clock_gettime(CLOCK_MONOTONIC, &start);
-    struct partition_data result = partition_concurrent_output(b, data, problem_size, thread_count);
-    clock_gettime(CLOCK_MONOTONIC, &finish);
-    long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
-    return elapsed_time_ms;
-}
-
-int main(int argc, char **argv)
-{
-    int problem_size = atoi(argv[1]);
-    // int b = atoi(argv[2]);
-    int thread_count = atoi(argv[3]);
-
-    uint64 *data = generate_data(problem_size);
-    printf("GO!\n");
-    // for (int t = 1; t <=32; t *= 2) {
-    //     printf("%i %ld\n", t, time_run(data, problem_size, 10, t));
-    // }
-    for (int b = 1; b <= 18; b++)
-    {
-        printf("%i %ld\n", b, time_run(data, problem_size, b, thread_count));
-    }
-    return 0;
 }
