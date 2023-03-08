@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <string.h>
 #include "types.h"
 #include "utils.h"
 #include "data-gen.h"
@@ -36,6 +36,26 @@ long time_run(int algorithm, uint64 *data, int problem_size, uint64 partition_co
     free(result.partition_sizes);
     free(result.partitions);
     return elapsed_time_ms;
+}
+
+void benchmark_all_combinations(uint64 *data, int problem_size, char *out_file_name) {
+    FILE *fp;
+    fp = fopen(out_file_name, "w");
+    fprintf(fp, " ,1,2,4,8,16,32\n");
+    for (int b = 1; b <= 18; b++) {
+        char gathered_data[1024] = "";
+        sprintf(gathered_data, "%i", b);
+        for (int t = 1; t <= 32; t *= 2) {
+            strcat(gathered_data, ",");
+            uint64 partition_count = 1llu << b;
+            long time = time_run(CONCURRENT_OUTPUT, data, problem_size, partition_count, t);
+            char as_string[10];
+            sprintf(as_string, "%ld", time);
+            strcat(gathered_data, as_string);
+        }
+        strcat(gathered_data, "\n");
+        fprintf(fp, "%s", gathered_data);
+    }
 }
 
 int main() {
