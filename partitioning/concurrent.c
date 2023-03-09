@@ -62,7 +62,7 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
 {
     int extra_buffer = input_size * 2;
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
-    int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
+    int thread_section_size = ((input_size + (thread_count - 1)) / thread_count) * 2;
 
     pthread_mutex_t *mutexes = malloc(partition_count * sizeof(pthread_mutex_t));
 
@@ -107,6 +107,6 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
 
 int main() {
     uint64 data[10] = {8, 1, 9, 2, 10, 3, 11, 4, 12, 5};
-    partition_concurrent_output(data, 10, 4, 4);
+    partition_concurrent_output(data, 5, 2, 2);
     return 0;
 }
