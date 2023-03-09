@@ -44,13 +44,14 @@ void *call_partition_concurrent(void *args)
         uint64 *curr_read = input + start_index + i * 2;
         uint64 hash = *((uint64 *)curr_read) % partition_count;
         pthread_mutex_t curr_mutex = mutexes[hash];
-        pthread_mutex_lock(&curr_mutex);
-        uint64 write_index = write_indeces[hash];
+        // pthread_mutex_lock(&curr_mutex);
+        // uint64 write_index = write_indeces[hash];
+        // write_indeces[hash] += 2;
+        long write_index = atomic_fetch_add(&write_indeces[hash], 2);
         uint64 partition_write_index = hash * partition_size + write_index;
         partitions[partition_write_index] = *curr_read;
         partitions[partition_write_index + 1] = *(curr_read + 1);
-        write_indeces[hash] += 2;
-        pthread_mutex_unlock(&curr_mutex);
+        // pthread_mutex_unlock(&curr_mutex);
     }
     free(args);
 
@@ -59,7 +60,7 @@ void *call_partition_concurrent(void *args)
 
 struct partition_info partition_concurrent_output(uint64 *input, uint64 input_size, uint64 thread_count, uint64 partition_count)
 {
-    int extra_buffer = input_size * 0.1;
+    int extra_buffer = input_size * 2;
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = (input_size * 2 + (thread_count - 1)) / thread_count;
 
@@ -104,3 +105,8 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     return data;
 }
 
+int main() {
+    uint64 data[10] = {8, 1, 9, 2, 10, 3, 11, 4, 12, 5};
+    partition_concurrent_output(data, 10, 4, 4);
+    return 0;
+}
