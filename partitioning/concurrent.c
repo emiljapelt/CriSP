@@ -12,7 +12,7 @@
 #include "types.h"
 #include "concurrent.h"
 
-void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
+void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_index, uint64 thread_section_size, uint64 partition_count, atomic_long *write_indeces, uint64 partition_size, uint64 input_size)
 {
     uint64 *alloc = malloc(8 * sizeof(uint64));
     alloc[0] = (uint64)input;
@@ -33,7 +33,7 @@ void *call_partition_concurrent(void *args)
     uint64 start_index = *(uint64 *)(args + 2 * 8);
     uint64 thread_section_size = *(uint64 *)(args + 3 * 8);
     uint64 partition_count = *(uint64 *)(args + 4 * 8);
-    uint64 *write_indeces = *(uint64 **)(args + 5 * 8);
+    atomic_long *write_indeces = *(atomic_long **)(args + 5 * 8);
     uint64 partition_size = *(uint64 *)(args + 6 * 8);
     uint64 input_size = *(uint64 *)(args + 7 * 8);
 
@@ -57,7 +57,7 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = ((input_size + (thread_count - 1)) / thread_count) * 2;
 
-    uint64 *write_indeces = malloc(partition_count * sizeof(uint64));
+    atomic_long *write_indeces = malloc(partition_count * sizeof(atomic_long));
     uint64 bytes_to_allocate = partition_size * partition_count * sizeof(uint64);
     uint64 *partitions = malloc(bytes_to_allocate);
     pthread_t threads[thread_count];
@@ -86,7 +86,7 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     {
         write_indeces[i] = write_indeces[i] / 2;
     }
-    struct partition_info data = { partitions, write_indeces };
+    struct partition_info data = { partitions, (uint64*)write_indeces };
     return data;
 }
 
