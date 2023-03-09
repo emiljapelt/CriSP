@@ -39,12 +39,13 @@ void *call_partition_concurrent(void *args)
 
     for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
-        uint64 *curr_read = input + start_index + i * 2;
-        uint64 hash = *((uint64 *)curr_read) % partition_count;
+        uint64 *read_address = input + start_index + i * 2;
+        uint64 read_value = *read_address;
+        uint64 hash = read_value % partition_count;
         long write_index = atomic_fetch_add(&write_indeces[hash], 2);
         uint64 partition_write_index = hash * partition_size + write_index;
-        partitions[partition_write_index] = *curr_read;
-        partitions[partition_write_index + 1] = *(curr_read + 1);
+        partitions[partition_write_index] = read_value;
+        partitions[partition_write_index + 1] = *(read_address + 1);
     }
     free(args);
 
@@ -89,4 +90,3 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
     struct partition_info data = { partitions, (uint64*)write_indeces };
     return data;
 }
-
