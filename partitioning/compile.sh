@@ -1,2 +1,2 @@
-gcc -pthread -g ./count-then-move.c ./concurrent.c ./data-gen.c ./utils.c ./partitioning.c -o ./partitioning.exe
+gcc -pthread ./pcg-c-0.94/extras/entropy.o ./pcg-c-0.94/src/pcg-advance-64.o ./pcg-c-0.94/src/pcg-advance-128.o ./pcg-c-0.94/src/pcg-rngs-128.o ./pcg-c-0.94/src/pcg-rngs-64.o ./count-then-move.c ./concurrent.c ./data-gen.c ./utils.c ./partitioning.c -o ./partitioning.exe
 # Add '-Wall -g3 -fsanitize=address' for address debugging
