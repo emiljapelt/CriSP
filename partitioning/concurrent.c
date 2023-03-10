@@ -12,9 +12,9 @@
 #include "types.h"
 #include "concurrent.h"
 
-void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_index, uint64 thread_section_size, uint64 partition_count, atomic_long *write_indeces, uint64 partition_size, uint64 input_size)
+void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_index, uint64 thread_section_size, uint64 partition_count, atomic_long *write_indeces, uint64 partition_size)
 {
-    uint64 *alloc = malloc(8 * sizeof(uint64));
+    uint64 *alloc = malloc(7 * sizeof(uint64));
     alloc[0] = (uint64)input;
     alloc[1] = (uint64)partitions;
     alloc[2] = start_index;
@@ -22,7 +22,6 @@ void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_ind
     alloc[4] = partition_count;
     alloc[5] = (uint64)write_indeces;
     alloc[6] = (uint64)partition_size;
-    alloc[7] = (uint64)input_size;
     return alloc;
 }
 
@@ -35,7 +34,6 @@ void *call_partition_concurrent(void *args)
     uint64 partition_count = *(uint64 *)(args + 4 * 8);
     atomic_long *write_indeces = *(atomic_long **)(args + 5 * 8);
     uint64 partition_size = *(uint64 *)(args + 6 * 8);
-    uint64 input_size = *(uint64 *)(args + 7 * 8);
 
     for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
@@ -74,7 +72,7 @@ struct partition_info partition_concurrent_output(uint64 *input, uint64 input_si
         if (i == thread_count - 1) {
             thread_section_size = (input_size * 2) - start_index;
         }
-        void *args = create_args_concurrent(input, partitions, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
+        void *args = create_args_concurrent(input, partitions, start_index, thread_section_size, partition_count, write_indeces, partition_size);
         pthread_create(&threads[i], NULL, call_partition_concurrent, args);
     }
 
