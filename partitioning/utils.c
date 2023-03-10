@@ -61,6 +61,25 @@ void print_partition_distribution(struct partition_info info, int partition_coun
     }
 }
 
+void print_correct_stats(uint64 *data, uint64 partition_count, uint64 problem_size) {
+    uint64 counts[partition_count];
+    for (int i = 0; i < partition_count; i++) counts[i] = 0;
+    for (int i = 0; i < problem_size; i++) {
+        uint64 hash = data[2*i] % partition_count;
+        counts[hash]++;
+    }
+
+    uint64 max_size = 0;
+    uint64 min_size = 1 << 30;
+
+    for (int i = 0; i < partition_count; i++) {
+        if (counts[i] > max_size) max_size = counts[i];
+        if (counts[i] < min_size) min_size = counts[i];
+    }
+    printf("max: %lli\n", max_size);
+    printf("min: %lli\n", min_size);
+}
+
 void print_partition_statistic(struct partition_info info, int partition_count) {
     printf("# statistics\n");
 
