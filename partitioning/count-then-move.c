@@ -11,7 +11,7 @@ void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_report
 // Count partition contributions
     for(uint64 i = 0; i < partition_count; i++) count_reports[(thread_id*partition_count)+i] = 0;
     for(uint64 i = 0; i < work_size; i++) {
-        count_reports[(thread_id*partition_count) + hash(input[start_index+(2*i)])]++;
+        count_reports[(thread_id*partition_count) + hash(input[(2*start_index)+(2*i)])]++;
     }
 
 // Thread synchronization
@@ -36,9 +36,9 @@ void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_report
 
 // Move data to output
     for(uint64 i = 0; i < work_size; i++) {
-        uint64 h = hash(input[start_index+(2*i)]);
-        output[partition_starts[h]+partition_offsets[h]] = input[start_index+(2*i)];
-        output[partition_starts[h]+partition_offsets[h]+1] = input[start_index+(2*i)+1];
+        uint64 h = hash(input[(2*start_index)+(2*i)]);
+        output[partition_starts[h]+partition_offsets[h]] = input[(2*start_index)+(2*i)];
+        output[partition_starts[h]+partition_offsets[h]+1] = input[(2*start_index)+(2*i)+1];
         partition_offsets[h] += 2;
     }
 }
