@@ -84,9 +84,11 @@ void print_partition_statistic(struct partition_info info, int partition_count) 
     printf("# statistics\n");
 
     uint64 max_partition_size = info.partition_sizes[0];
-    for(int i = 1; i < partition_count; i++) if (info.partition_sizes[i] > max_partition_size) max_partition_size = info.partition_sizes[i];
     uint64 min_partition_size = info.partition_sizes[0];
-    for(int i = 1; i < partition_count; i++) if (info.partition_sizes[i] < min_partition_size) min_partition_size = info.partition_sizes[i];
+    for(int i = 1; i < partition_count; i++) {
+        if (info.partition_sizes[i] > max_partition_size) max_partition_size = info.partition_sizes[i];
+        if (info.partition_sizes[i] < min_partition_size) min_partition_size = info.partition_sizes[i];
+    }
     uint64 size_sum = 0;
     for(int i = 0; i < partition_count; i++) size_sum += info.partition_sizes[i];
     double expected_average = (double)size_sum/partition_count;
