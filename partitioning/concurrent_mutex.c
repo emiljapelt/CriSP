@@ -10,7 +10,7 @@
 #include "types.h"
 #include <time.h>
 
-void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
+void *create_args_mutex(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, uint64 start_index, uint64 thread_section_size, uint64 partition_count, uint64 *write_indeces, uint64 partition_size, uint64 input_size)
 {
     uint64 *alloc = malloc(9 * sizeof(uint64));
     alloc[0] = (uint64)input;
@@ -24,7 +24,7 @@ void *create_args(uint64 *input, uint64 *partitions, pthread_mutex_t *mutexes, u
     alloc[8] = (uint64)input_size;
     return alloc;
 }
-void *call_partition_concurrent(void *args)
+void *call_partition_concurrent_mutex(void *args)
 {
     uint64 *input = *(uint64 **)args;
     uint64 *partitions = *(uint64 **)(args + 1 * 8);
@@ -74,53 +74,14 @@ struct partition_info partition_concurrent_output_mutex(uint64 *input, uint64 in
     for (int i = 0; i < thread_count; i++)
     {
         uint64 start_index = i * thread_section_size;
-        void *args = create_args(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
-        pthread_create(&threads[i], NULL, call_partition_concurrent, args);
+        void *args = create_args_mutex(input, partitions, mutexes, start_index, thread_section_size, partition_count, write_indeces, partition_size, input_size);
+        pthread_create(&threads[i], NULL, call_partition_concurrent_mutex, args);
     }
     for (int i = 0; i < thread_count; i++)
     {
         pthread_join(threads[i], NULL);
     }
     free(mutexes);
-    free(write_indeces);
-    struct partition_info data = {partitions, partition_size};
+    struct partition_info data = {partitions, write_indeces};
     return data;
-}
-void print_result(struct partition_info result)
-{
-    for (int i = 0; i < result.partition_count; i++)
-    {
-        printf("partition %i\n", i);
-        for (int j = 0; j < result.partition_size; j++)
-        {
-            printf("%lli ", result.partitions[result.partition_size * i + j]);
-        }
-        printf("\n");
-    }
-}
-// args: problem_size b threads_count
-int main(int argc, char **argv)
-{
-    int problem_size = atoi(argv[1]);
-    int b = atoi(argv[2]);
-    int thread_count = atoi(argv[3]);
-
-    // Generate data
-    uint64 *data = malloc((sizeof(uint64)) * problem_size * 2);
-    char buffer[8];
-    for (uint64 i = 0; i < problem_size; i++)
-    {
-        getrandom(&buffer, 8, 0);
-        data[i * 2] = *(uint64 *)&buffer;
-        data[i * 2 + 1] = i;
-    }
-
-    struct timespec start, finish;
-    clock_gettime(CLOCK_MONOTONIC, &start);
-    struct partition_info result = partition_concurrent_output(b, data, problem_size, thread_count);
-    clock_gettime(CLOCK_MONOTONIC, &finish);
-    int elapsed = finish.tv_nsec - start.tv_nsec;
-    print_result(result);
-    printf("Completed in %i ns\n", elapsed);
-    return 0;
 }

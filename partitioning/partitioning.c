@@ -88,7 +88,8 @@ void algorithm_correctness_check() {
     generate_data(&data, problem_size);
 
     struct partition_info concurrent_info = partition_concurrent_output(data, problem_size, 16, partition_count);
-    struct partition_info countmove_info = partition_count_then_move(data, problem_size, 16, partition_count);
+    // struct partition_info countmove_info = partition_count_then_move(data, problem_size, 16, partition_count);
+    struct partition_info countmove_info = partition_concurrent_output_mutex(data, problem_size, 16, partition_count);
     print_partition_statistic(concurrent_info, partition_count);
     print_partition_statistic(countmove_info, partition_count);
     printf("# correct results\n");
@@ -114,12 +115,12 @@ void run_benchmarks() {
     benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "./benchmark_data/speed_atomic.csv", 2, 18, 32);
     printf("benching count-then-move\n");
     // benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "./benchmark_data/10-3_count-then-move.csv", 8, 18, 32);
-    benchmark_all_combinations(CONCURRENT_MUTEX, data, problem_size, "./benchmark_data/speed_mutex.csv", 2, 18, 32);
+    // benchmark_all_combinations(CONCURRENT_MUTEX, data, problem_size, "./benchmark_data/speed_mutex.csv", 2, 18, 32);
     free(data);
 }
 
 int main() {
-    run_benchmarks();
-    // algorithm_correctness_check();
+    // run_benchmarks();
+    algorithm_correctness_check();
     return 0;
 }
