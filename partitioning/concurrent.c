@@ -39,11 +39,12 @@ void *call_partition_concurrent(void *args)
     {
         uint64 *read_address = input + start_index + i * 2;
         uint64 read_value = *read_address;
+        uint64 read_value2 = *(read_address + 1);
         uint64 hash = read_value % partition_count;
         long write_index = atomic_fetch_add(&write_indeces[hash], 2);
         uint64 partition_write_index = hash * partition_size + write_index;
         partitions[partition_write_index] = read_value;
-        partitions[partition_write_index + 1] = *(read_address + 1);
+        partitions[partition_write_index + 1] = read_value2;
     }
     free(args);
 
@@ -52,7 +53,7 @@ void *call_partition_concurrent(void *args)
 
 struct partition_info partition_concurrent_output(uint64 *input, uint64 input_size, uint64 thread_count, uint64 partition_count)
 {
-    int extra_buffer = input_size * 0.1;
+    int extra_buffer = input_size * 0.5; // in the paper they use extra buffers of 50% or more
     int partition_size = (input_size + extra_buffer) * 2 / partition_count; // times 2 because it is a tuple
     int thread_section_size = ((input_size + (thread_count - 1)) / thread_count) * 2;
 
