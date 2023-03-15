@@ -1,14 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <sys/random.h>
-#include <sys/wait.h>
 #include <pthread.h>
-#include <unistd.h>
-#include <math.h>
 #include <stdatomic.h>
-#include <time.h>
-#include <string.h>
 #include "types.h"
 #include "concurrent.h"
 
@@ -35,9 +27,11 @@ void *call_partition_concurrent(void *args)
     atomic_long *write_indeces = *(atomic_long **)(args + 5 * 8);
     uint64 partition_size = *(uint64 *)(args + 6 * 8);
 
+    uint64 *thread_start = input + start_index;
+
     for (uint64 i = 0; i < thread_section_size / 2; i++)
     {
-        uint64 *read_address = input + start_index + i * 2;
+        uint64 *read_address = thread_start + i * 2;
         uint64 read_value = *read_address;
         uint64 read_value2 = *(read_address + 1);
         uint64 hash = read_value % partition_count;
