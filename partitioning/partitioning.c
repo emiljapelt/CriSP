@@ -104,14 +104,30 @@ void run_benchmarks() {
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
     printf("benching concurrent output\n");
-    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "./benchmark_data/10-3_concurrent.csv", 8, 18, 32);
+    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "./benchmark_data/10-3_concurrent.csv", 2, 18, 8);
     printf("benching count-then-move\n");
-    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "./benchmark_data/10-3_count-then-move.csv", 8, 18, 32);
+    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "./benchmark_data/10-3_count-then-move.csv", 2, 18, 8);
     free(data);
 }
 
-int main() {
-    run_benchmarks();
-    // algorithm_correctness_check();
+int main(int argc, char **argv) {
+    uint64* data;
+    uint64 data_size = 16777216;
+    generate_data(&data, data_size);
+
+    // method thread_count partition_count
+    if (argc > 1) {
+        int method = atoi(argv[1]);
+        int thread_count = atoi(argv[2]);
+        int partition_count = atoi(argv[3]);
+        if (method == COUNT_THEN_MOVE){
+            partition_count_then_move(data, data_size, thread_count, partition_count);
+        } else {
+            partition_concurrent_output(data, data_size, thread_count, partition_count);
+        } 
+    } else {
+        run_benchmarks();
+        // algorithm_correctness_check();
+    }
     return 0;
 }

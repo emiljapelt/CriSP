@@ -1,46 +1,101 @@
-import {parse} from "papaparse";
-import {readFileSync} from "fs";
-import { exec } from "child_process"
-// import { createCanvas } from 'canvas';
-// import Chart from 'chart.js';
+import { spawn } from "child_process";
+import { writeFileSync } from "fs"
 
-const csvData = readFileSync("../benchmark_data/server_8passes_concurrent.csv", "utf8")
+interface tuple {
+  name: string;
+  value: number;
+}
 
-const results = parse(csvData, { header: true })
+const metrics = [
+  "cache-misses",
+  "L1-dcache-load-misses",
+  "L1-icache-load-misses",
+  "dTLB-load-misses",
+  "iTLB-load-misses",
+  "context-switches",
+  "branch-misses",
+];
 
-const data = results.data
+async function doTheRun(
+  method: number,
+  thread_count: number,
+  partition_count: number
+) {
+  const regex = /(?<value>(?:\d|\.)+)(?:\s{6})(?<name>\S+)/gm;
+  // maybe necessary to run sudo sysctl -w kernel.perf_event_paranoid=-1
+  const processOutput = (await runProcess("perf", [
+    "stat",
+    "-e",
+    metrics.join(","),
+    "../partitioning.exe",
+    `${method}`,
+    `${thread_count}`,
+    `${partition_count}`,
+  ])) as string;
 
-console.log(data)
+  const matches = processOutput.matchAll(regex);
+  const results: tuple[] = [];
+  let next = matches.next();
+  while (next.value) {
+    const parsedValue = Number(next.value[1].replaceAll(".", ""));
+    results.push({ name: next.value[2], value: parsedValue });
+    next = matches.next();
+  }
 
-// const canvas = createCanvas(400, 400);
-// const ctx = canvas.getContext('2d');
+  console.log(results);
+
+  return results;
+}
+
+function generateThreadList(upToThreads: number) {
+  let collector = ""
+  for (let i = 1; i <= upToThreads; i*=2) {
+    collector += "," + i
+  }
+  return collector
+}
+
+async function generateCSV(method: number, upToThreads: number, upToHashbits: number) {
+  let csvCollectors: {[key: string]: string} = {}
+  for (const metric of metrics) {
+    csvCollectors[metric] = generateThreadList(upToThreads)
+  }
+
+  for (let b = 1; b <= upToHashbits; b++) {
+    for (const metric of metrics) {
+      csvCollectors[metric] += `\n${b}`
+    }
+    for (let t = 1; t <= upToThreads; t++) {
+      const results = await doTheRun(method, t, Math.pow(2, b))
+      for (const result of results) {
+        csvCollectors[result.name] += "," + result.value
+      }
+    }
+  }
+
+  for (const collector in csvCollectors) {
+    writeFileSync(`./meme/${collector}.csv`, csvCollectors[collector])
+  }
+}
 
 
-// const chart = new Chart(ctx, {
-//   type: 'bar',
-//   data: {
-//     labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
-//     datasets: [
-//       {
-//         label: 'My Chart',
-//         data: data.map((d) => d.value),
-//         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-//         borderColor: 'rgba(255, 99, 132, 1)',
-//         borderWidth: 1,
-//       },
-//     ],
-//   },
-//   options: {
-//     scales: {
-//       yAxes: [
-//         {
-//           ticks: {
-//             beginAtZero: true,
-//           },
-//         },
-//       ],
-//     },
-//   },
-// });
+// doTheRun(0, 16, 64);
+generateCSV(0, 2, 4)
 
-// const chartImage = canvas.toBuffer('image/png');
+function runProcess(command: string, args: string[]) {
+  return new Promise((resolve, reject) => {
+    try {
+      const prcs = spawn(command, args);
+      const chunks: Uint8Array[] = [];
+      const errorHandler = (buf: Error): void => reject(buf.toString().trim());
+      prcs.once("error", errorHandler);
+      prcs.stderr.on("data", (buf) => chunks.push(buf));
+      // prcs.stdout.on("data", (buf) => chunks.push(buf))
+      prcs.stdout.on("end", () => {
+        resolve(Buffer.concat(chunks).toString().trim());
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
