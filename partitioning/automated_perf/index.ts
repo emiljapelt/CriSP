@@ -1,9 +1,14 @@
 import { spawn } from "child_process";
-import { writeFileSync } from "fs"
+import { writeFileSync, mkdir , existsSync} from "fs"
 
 interface tuple {
   name: string;
   value: number;
+}
+
+enum Algorithm {
+  COUNT_THEN_MOVE,
+  CONCURRENT_OUTPUT
 }
 
 const metrics = [
@@ -17,7 +22,7 @@ const metrics = [
 ];
 
 async function doTheRun(
-  method: number,
+  method: Algorithm,
   thread_count: number,
   partition_count: number
 ) {
@@ -35,14 +40,10 @@ async function doTheRun(
 
   const matches = processOutput.matchAll(regex);
   const results: tuple[] = [];
-  let next = matches.next();
-  while (next.value) {
+  for (let next = matches.next(); next.value; next = matches.next()) {
     const parsedValue = Number(next.value[1].replaceAll(".", ""));
     results.push({ name: next.value[2], value: parsedValue });
-    next = matches.next();
   }
-
-  console.log(results);
 
   return results;
 }
@@ -55,7 +56,24 @@ function generateThreadList(upToThreads: number) {
   return collector
 }
 
-async function generateCSV(method: number, upToThreads: number, upToHashbits: number) {
+function getDateString() {
+  const now = new Date()
+  return `${now.getDate()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`
+}
+
+async function writeToCSV(csvCollectors: {[key: string]: string}, method: Algorithm) {
+  const dateString = getDateString()
+  const basePath = `../benchmark_data/${dateString}`
+
+  if (!existsSync(basePath)) await mkdirAsync(basePath)
+  await mkdirAsync(`../benchmark_data/${dateString}/${Algorithm[method]}`)
+
+  for (const collector in csvCollectors) {
+    writeFileSync(`${basePath}/${Algorithm[method]}/${collector}.csv`, csvCollectors[collector])
+  }
+}
+
+async function runPerfExperiments(method: Algorithm, upToThreads: number, upToHashbits: number) {
   let csvCollectors: {[key: string]: string} = {}
   for (const metric of metrics) {
     csvCollectors[metric] = generateThreadList(upToThreads)
@@ -73,14 +91,8 @@ async function generateCSV(method: number, upToThreads: number, upToHashbits: nu
     }
   }
 
-  for (const collector in csvCollectors) {
-    writeFileSync(`./meme/${collector}.csv`, csvCollectors[collector])
-  }
+  await writeToCSV(csvCollectors, method)
 }
-
-
-// doTheRun(0, 16, 64);
-generateCSV(0, 2, 4)
 
 function runProcess(command: string, args: string[]) {
   return new Promise((resolve, reject) => {
@@ -99,3 +111,24 @@ function runProcess(command: string, args: string[]) {
     }
   });
 }
+
+function mkdirAsync(path: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    mkdir(path, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+async function runAllExperiments() {
+  console.log("perf count-then-move")
+  await runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 32, 18)
+  console.log("perf concorrent output")
+  await runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 32, 18)
+}
+
+runAllExperiments()
