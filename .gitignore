@@ -6,7 +6,6 @@
 *.ko
 *.obj
 *.elf
-index.js
 
 # Linker output
 *.ilk
