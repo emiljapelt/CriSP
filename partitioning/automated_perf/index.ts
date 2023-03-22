@@ -37,7 +37,6 @@ async function doTheRun(
     `${thread_count}`,
     `${partition_count}`,
   ])) as string;
-
   const matches = processOutput.matchAll(regex);
   const results: tuple[] = [];
   for (let next = matches.next(); next.value; next = matches.next()) {
@@ -56,24 +55,16 @@ function generateThreadList(upToThreads: number) {
   return collector
 }
 
-function getDateString() {
-  const now = new Date()
-  return `${now.getDate()}-${now.getMonth()}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}`
-}
-
-async function writeToCSV(csvCollectors: {[key: string]: string}, method: Algorithm) {
-  const dateString = getDateString()
-  const basePath = `../benchmark_data/${dateString}`
-
-  if (!existsSync(basePath)) await mkdirAsync(basePath)
-  await mkdirAsync(`../benchmark_data/${dateString}/${Algorithm[method]}`)
+async function writeToCSV(csvCollectors: {[key: string]: string}, method: Algorithm, path: string) {
+  if (!existsSync(path)) await mkdirAsync(path)
+  await mkdirAsync(`${path}/${Algorithm[method]}`)
 
   for (const collector in csvCollectors) {
-    writeFileSync(`${basePath}/${Algorithm[method]}/${collector}.csv`, csvCollectors[collector])
+    writeFileSync(`${path}/${Algorithm[method]}/${collector}.csv`, csvCollectors[collector])
   }
 }
 
-async function runPerfExperiments(method: Algorithm, upToThreads: number, upToHashbits: number) {
+async function runPerfExperiments(method: Algorithm, upToThreads: number, upToHashbits: number, path: string) {
   let csvCollectors: {[key: string]: string} = {}
   for (const metric of metrics) {
     csvCollectors[metric] = generateThreadList(upToThreads)
@@ -91,7 +82,7 @@ async function runPerfExperiments(method: Algorithm, upToThreads: number, upToHa
     }
   }
 
-  await writeToCSV(csvCollectors, method)
+  await writeToCSV(csvCollectors, method, path)
 }
 
 function runProcess(command: string, args: string[]) {
@@ -125,10 +116,12 @@ function mkdirAsync(path: string): Promise<void> {
 }
 
 async function runAllExperiments() {
+  const basePath = `../benchmark_data/${process.argv[2]}`
+
   console.log("perf count-then-move")
-  await runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 32, 18)
-  console.log("perf concorrent output")
-  await runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 32, 18)
+  await runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 2, 4, basePath)
+  console.log("perf concurrent output")
+  await runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 2, 4, basePath)
 }
 
-runAllExperiments()
+runAllExperiments().then(() => console.log("done"));
