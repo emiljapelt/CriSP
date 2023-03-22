@@ -130,6 +130,7 @@ int main(int argc, char **argv) {
         int thread_count = atoi(argv[2]);
         int partition_count = atoi(argv[3]);
         if (method == COUNT_THEN_MOVE){
+            init_utils(partition_count);
             partition_count_then_move(data, data_size, thread_count, partition_count);
         } else {
             partition_concurrent_output(data, data_size, thread_count, partition_count);
