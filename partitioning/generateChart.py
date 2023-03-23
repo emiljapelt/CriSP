@@ -11,6 +11,9 @@ if not os.path.exists(directory + '/charts'):
     os.makedirs(directory + '/charts')
 
 for file in file_list:
+    if not os.path.isfile(directory + "/" + file):
+        continue
+    
     metric = file[:-4]
     df = pd.read_csv(directory + "/" + file, names=['Category', 1, 2, 4, 8, 16, 32], skiprows=1)
 
