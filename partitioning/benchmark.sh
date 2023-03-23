@@ -1,6 +1,4 @@
 ./compile.sh
 now=$(date +'%d-%m-%Y_%H-%M')
-cd automated_perf
-npm start $now
-cd ..
+node perf-run.js $now
 ./partitioning.exe $now
