@@ -18,6 +18,7 @@ for file in file_list:
         df.iloc[:, 1:] = 16777216 / (df.iloc[:, 1:]/1000)
 
     ax = df.plot(kind='line', x='Category', y=[1, 2, 4, 8, 16, 32], marker='o', legend=True)
+    plt.legend(title="Threads")
     
     if file.__contains__("timing"):
         ax.set_ylabel('Million tuples per second')
