@@ -37,11 +37,19 @@ async function doTheRun(
     `${thread_count}`,
     `${partition_count}`,
   ])) as string;
-  const matches = processOutput.matchAll(regex);
+  // const matches = processOutput.matchAll(regex);
+  let match: RegExpExecArray | null;
+
+  const matches: string[] = []
+  while ((match = regex.exec(processOutput)) !== null) {
+    matches.push(match[0])
+  }
+  
   const results: tuple[] = [];
-  for (let next = matches.next(); next.value; next = matches.next()) {
-    const parsedValue = Number(next.value[1].replaceAll(".", ""));
-    results.push({ name: next.value[2], value: parsedValue });
+  for (const match of matches) {
+    const split = match.split(/\s+/)
+    const parsedValue = Number(split[0].replace(new RegExp("\\.|,", "g"), ""));
+    results.push({ name: split[1], value: parsedValue });
   }
 
   return results;
