@@ -26,7 +26,7 @@ async function doTheRun(
   thread_count: number,
   partition_count: number
 ) {
-  const regex = /((?:\d|\.)+)(?:\s{6})(\S+)/gm;
+  const regex = /((?:\d|\.|,)+)(?:\s{6})(\S+)/gm;
   // maybe necessary to run sudo sysctl -w kernel.perf_event_paranoid=-1
   const processOutput = (await runProcess("perf", [
     "stat",
