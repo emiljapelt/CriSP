@@ -37,7 +37,6 @@ async function doTheRun(
     `${thread_count}`,
     `${partition_count}`,
   ])) as string;
-  // const matches = processOutput.matchAll(regex);
   let match: RegExpExecArray | null;
 
   const matches: string[] = []
@@ -82,7 +81,7 @@ async function runPerfExperiments(method: Algorithm, upToThreads: number, upToHa
     for (const metric of metrics) {
       csvCollectors[metric] += `\n${b}`
     }
-    for (let t = 1; t <= upToThreads; t++) {
+    for (let t = 1; t <= upToThreads; t *= 2) {
       const results = await doTheRun(method, t, Math.pow(2, b))
       for (const result of results) {
         csvCollectors[result.name] += "," + result.value
@@ -127,9 +126,9 @@ async function runAllExperiments() {
   const basePath = `../benchmark_data/${process.argv[2]}`
 
   console.log("perf count-then-move")
-  await runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 2, 4, basePath)
+  await runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 32, 18, basePath)
   console.log("perf concurrent output")
-  await runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 2, 4, basePath)
+  await runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 32, 18, basePath)
 }
 
 runAllExperiments().then(() => console.log("done"));

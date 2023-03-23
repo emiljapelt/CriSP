@@ -58,7 +58,7 @@ function doTheRun(method, thread_count, partition_count) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    regex = /((?:\d|\.)+)(?:\s{6})(\S+)/gm;
+                    regex = /((?:\d|\.|,)+)(?:\s{6})(\S+)/gm;
                     return [4 /*yield*/, runProcess("perf", [
                             "stat",
                             "-e",
@@ -147,7 +147,7 @@ function runPerfExperiments(method, upToThreads, upToHashbits, path) {
                     }
                     _c.label = 4;
                 case 4:
-                    t++;
+                    t *= 2;
                     return [3 /*break*/, 2];
                 case 5:
                     b++;
@@ -198,11 +198,11 @@ function runAllExperiments() {
                 case 0:
                     basePath = "../benchmark_data/".concat(process.argv[2]);
                     console.log("perf count-then-move");
-                    return [4 /*yield*/, runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 2, 4, basePath)];
+                    return [4 /*yield*/, runPerfExperiments(Algorithm.COUNT_THEN_MOVE, 32, 18, basePath)];
                 case 1:
                     _a.sent();
                     console.log("perf concurrent output");
-                    return [4 /*yield*/, runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 2, 4, basePath)];
+                    return [4 /*yield*/, runPerfExperiments(Algorithm.CONCURRENT_OUTPUT, 32, 18, basePath)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
