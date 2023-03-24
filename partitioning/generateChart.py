@@ -4,6 +4,7 @@ import matplotlib.ticker as ticker
 import sys
 import os
 
+# directory should be the path to the folder of either CONCURRENT_OUTPUT or COUNT_THEN_MOVE
 directory = sys.argv[1]
 file_list = os.listdir(directory)
 
@@ -27,12 +28,14 @@ for file in file_list:
         ax.set_ylabel('Million tuples per second')
         formatter = ticker.FuncFormatter(lambda x, pos: '{:.0f}'.format(round(x/1000000)))
         ax.yaxis.set_major_formatter(formatter)
+        ax.set_title("throughput")
     else:
-        ax.set_ylabel('Count')
+        method = os.path.basename(directory).lower()
+        ax.set_ylabel(metric)
+        ax.set_title(metric + ", " + method)
 
     ax.set_ylim(ymin=0)
 
-    ax.set_title(metric)
     ax.grid(True)
     ax.set_xticks(range(1, 19))
     ax.set_xticklabels(range(1, 19))
