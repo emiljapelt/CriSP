@@ -11,7 +11,6 @@
 *.ilk
 *.map
 *.exp
-benchmark_data
 
 # Precompiled Headers
 *.gch
