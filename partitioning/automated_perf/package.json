@@ -8,8 +8,5 @@
     "start": "tsc index.ts && node index.js"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/papaparse": "^5.3.7"
-  }
+  "license": "ISC"
 }

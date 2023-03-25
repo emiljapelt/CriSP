@@ -21,7 +21,6 @@
 *.a
 *.la
 *.lo
-node_modules
 
 # Shared objects (inc. Windows DLLs)
 *.dll
