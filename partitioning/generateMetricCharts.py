@@ -28,7 +28,7 @@ for file in file_list:
         ax.set_ylabel('Million tuples per second')
         formatter = ticker.FuncFormatter(lambda x, pos: '{:.0f}'.format(round(x/1000000)))
         ax.yaxis.set_major_formatter(formatter)
-        ax.set_title("throughput")
+        ax.set_title("throughput, " + method)
     else:
         method = os.path.basename(directory).lower()
         ax.set_ylabel(metric)
