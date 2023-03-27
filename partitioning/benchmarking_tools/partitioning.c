@@ -110,13 +110,10 @@ void run_benchmarks(char *dateString) {
     strcat(concu_path, "/CONCURRENT_OUTPUT");
     strcat(concu_path, "/timing.csv");
 
-    printf("ctm_path: %s\n", ctm_path);
-    printf("concu_path: %s\n", concu_path);
-
     printf("benching concurrent output\n");
-    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, concu_path, 2, 18, 8);
+    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, concu_path, 2, 18, 32);
     printf("benching count-then-move\n");
-    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, ctm_path, 2, 18, 8);
+    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, ctm_path, 2, 18, 32);
     free(data);
 }
 
