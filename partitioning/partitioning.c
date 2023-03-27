@@ -89,11 +89,8 @@ void algorithm_correctness_check() {
     free(data);
 }
 
-void run_benchmarks() {
+void run_benchmarks(char *dateString) {
     int problem_size = 16777216;
-    uint64 b = 4;
-    uint64 partition_count = 1llu << b;
-    init_utils(partition_count);
 
     uint64* data;
     struct timespec start, finish;
@@ -103,15 +100,44 @@ void run_benchmarks() {
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
+    char ctm_path[100] = "./benchmark_data/";
+    strcat(ctm_path, dateString);
+    strcat(ctm_path, "/COUNT_THEN_MOVE");
+    strcat(ctm_path, "/timing.csv");
+
+    char concu_path[100] = "./benchmark_data/";
+    strcat(concu_path, dateString);
+    strcat(concu_path, "/CONCURRENT_OUTPUT");
+    strcat(concu_path, "/timing.csv");
+
+    printf("ctm_path: %s\n", ctm_path);
+    printf("concu_path: %s\n", concu_path);
+
     printf("benching concurrent output\n");
-    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, "./benchmark_data/10-3_concurrent.csv", 8, 18, 32);
+    benchmark_all_combinations(CONCURRENT_OUTPUT, data, problem_size, concu_path, 2, 18, 8);
     printf("benching count-then-move\n");
-    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, "./benchmark_data/10-3_count-then-move.csv", 8, 18, 32);
+    benchmark_all_combinations(COUNT_THEN_MOVE, data, problem_size, ctm_path, 2, 18, 8);
     free(data);
 }
 
-int main() {
-    run_benchmarks();
-    // algorithm_correctness_check();
+int main(int argc, char **argv) {
+    uint64* data;
+    uint64 data_size = 16777216;
+    generate_data(&data, data_size);
+    // method thread_count partition_count
+    if (argc > 2) {
+        int method = atoi(argv[1]);
+        int thread_count = atoi(argv[2]);
+        int partition_count = atoi(argv[3]);
+        if (method == COUNT_THEN_MOVE){
+            init_utils(partition_count);
+            partition_count_then_move(data, data_size, thread_count, partition_count);
+        } else {
+            partition_concurrent_output(data, data_size, thread_count, partition_count);
+        } 
+    } else {
+        run_benchmarks(argv[1]);
+        // algorithm_correctness_check();
+    }
     return 0;
 }
