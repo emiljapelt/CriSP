@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "limits": "c",
-        "pcg_variants.h": "c",
-        "entropy.h": "c"
-    }
-}

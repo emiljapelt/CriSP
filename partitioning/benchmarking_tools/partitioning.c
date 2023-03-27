@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "types.h"
-#include "utils.h"
-#include "data-gen.h"
-#include "count-then-move.h"
-#include "concurrent.h"
+#include "../utilities/types.h"
+#include "../utilities/utils.h"
+#include "../utilities/data-gen.h"
+#include "../partitioning_methods/count-then-move.h"
+#include "../partitioning_methods/concurrent.h"
 
 enum Algorithm {
     COUNT_THEN_MOVE,
@@ -100,12 +100,12 @@ void run_benchmarks(char *dateString) {
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
 
-    char ctm_path[100] = "./benchmark_data/";
+    char ctm_path[100] = "../benchmark_data/";
     strcat(ctm_path, dateString);
     strcat(ctm_path, "/COUNT_THEN_MOVE");
     strcat(ctm_path, "/timing.csv");
 
-    char concu_path[100] = "./benchmark_data/";
+    char concu_path[100] = "../benchmark_data/";
     strcat(concu_path, dateString);
     strcat(concu_path, "/CONCURRENT_OUTPUT");
     strcat(concu_path, "/timing.csv");

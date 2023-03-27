@@ -1,0 +1,2 @@
+make -C ./pcg-c-0.94/ && gcc -pthread ./pcg-c-0.94/extras/entropy.o ./pcg-c-0.94/src/pcg-advance-64.o ./pcg-c-0.94/src/pcg-advance-128.o ./pcg-c-0.94/src/pcg-rngs-128.o ./pcg-c-0.94/src/pcg-rngs-64.o ../partitioning_methods/count-then-move.c ../partitioning_methods/concurrent.c ./data-gen.c ./utils.c ../benchmarking_tools/partitioning.c -o ../benchmarking_tools/partitioning.exe
+# Add '-Wall -g3 -fsanitize=address' for address debugging
