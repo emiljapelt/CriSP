@@ -10,6 +10,8 @@ Run `benchmark.sh`. This will compile the project, run the node app to measure m
 
 ## Generating charts
 
+Install dependencies with `pip install matplotlib, pandas`
+
 To generate charts from the data for a partitioning method, run `python3 generateMetricCharts.py ./benchmark_data/<DATE_AND_TIME_OF_RUN>/<METHOD_NAME>`. Charts will then be put in the `charts` folder in the given directory. This means that to generate charts for both methods, run the command twice, once for each method.
 
 To generate charts comparing the two methods, run `python3 generateComparativeCharts.py ./benchmark_data/<DATE_AND_TIME_OF_RUN>`. This will generate charts comparing the two methods at 32 threads, and put them in the `comparative_charts` folder in the given directory.
