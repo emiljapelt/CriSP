@@ -2,8 +2,8 @@
 #include <stdatomic.h>
 #include <stdlib.h>
 
-#include "types.h"
-#include "utils.h"
+#include "../utilities/types.h"
+#include "../utilities/utils.h"
 #include "count-then-move.h"
 
 void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_reports, uint64* input, uint64* output, uint64 start_index, uint64 work_size, uint64 partition_count, _Atomic uint64* counted) {

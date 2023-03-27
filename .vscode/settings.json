@@ -7,6 +7,9 @@
         "*.tcc": "c",
         "cmath": "c",
         "random": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "limits": "c",
+        "pcg_variants.h": "c",
+        "entropy.h": "c"
     }
 }
