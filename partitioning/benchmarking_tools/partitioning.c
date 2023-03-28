@@ -89,9 +89,7 @@ void algorithm_correctness_check() {
     free(data);
 }
 
-void run_benchmarks(char *dateString) {
-    int problem_size = 16777216;
-
+void run_benchmarks(char *dateString, uint64 problem_size) {
     uint64* data;
     struct timespec start, finish;
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
@@ -118,22 +116,24 @@ void run_benchmarks(char *dateString) {
 }
 
 int main(int argc, char **argv) {
-    uint64* data;
-    uint64 data_size = 16777216;
-    generate_data(&data, data_size);
+    uint64 problem_size = 16777216;
+    
     // method thread_count partition_count
     if (argc > 2) {
+        uint64* data;
+        generate_data(&data, problem_size);
         int method = atoi(argv[1]);
         int thread_count = atoi(argv[2]);
         int partition_count = atoi(argv[3]);
         if (method == COUNT_THEN_MOVE){
             init_utils(partition_count);
-            partition_count_then_move(data, data_size, thread_count, partition_count);
+            partition_count_then_move(data, problem_size, thread_count, partition_count);
         } else {
-            partition_concurrent_output(data, data_size, thread_count, partition_count);
-        } 
+            partition_concurrent_output(data, problem_size, thread_count, partition_count);
+        }
+        free(data);
     } else {
-        run_benchmarks(argv[1]);
+        run_benchmarks(argv[1], problem_size);
         // algorithm_correctness_check();
     }
     return 0;
