@@ -1,0 +1,1 @@
+gcc -pthread ./merge.c -o ./merge.exe
