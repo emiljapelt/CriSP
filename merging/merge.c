@@ -142,13 +142,11 @@ void seq_merge_sort(int* array, int size) {
             r++; i++;
         }
     }
-    while (l < l_size) {
-        array[i] = l_array[l];
-        i++; l++;
+    if (l < l_size) {
+        memcpy(array + i, l_array + l, sizeof(int) * (l_size - l));
     }
-    while (r < r_size) {
-        array[i] = r_array[r];
-        i++; r++;
+    if (r < r_size) {
+        memcpy(array + i, r_array + r, sizeof(int) * (r_size - r));
     }
 
     free(l_array);
@@ -199,13 +197,11 @@ void* par_merge_sort(void* data) {
             r++; i++;
         }
     }
-    while (l < l_size) {
-        array[i] = l_array[l];
-        i++; l++;
+    if (l < l_size) {
+        memcpy(array + i, l_array + l, sizeof(int) * (l_size - l));
     }
-    while (r < r_size) {
-        array[i] = r_array[r];
-        i++; r++;
+    if (r < r_size) {
+        memcpy(array + i, r_array + r, sizeof(int) * (r_size - r));
     }
 
     free(data);
@@ -240,14 +236,15 @@ void fill_with_random_ints(int* array, int n) {
 };
 
 int not_main() {
-    int size = 1000000;
+    int size = 100;
     int array[size];
 
     fill_with_random_ints(array, size);
 
     // array_print(array, size);
     // par_merge_sort(proxy_args(array, size, 4));
-    general_par_merge_sort(proxy_general_args(array, size, 4, 100));
+    // general_par_merge_sort(proxy_general_args(array, size, 4, 100));
+    par_merge_sort(proxy_args(array, size, 1));
 
     if (is_sorted(array, size)) printf("true\n");
     else printf("false\n");

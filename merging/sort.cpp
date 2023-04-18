@@ -62,7 +62,8 @@ int main() {
   int* array = array_of_ints(size);
 
   // sort(array.begin(), array.end());
-  general_par_merge_sort(proxy_general_args(array, size, 10, 1000));
+  // general_par_merge_sort(proxy_general_args(array, size, 10, 1000));
+  not_main();
 
   // if (is_sorted(array, size)) cout << "sorted" << endl;
   // else cout << "not sorted :(" << endl;

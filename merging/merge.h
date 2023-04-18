@@ -17,3 +17,5 @@ void seq_merge_sort(int* array, int size);
 void* proxy_args(int* array, int size, int limiter);
 
 void* par_merge_sort(void* data);
+
+int not_main();
