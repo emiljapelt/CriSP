@@ -104,10 +104,27 @@ void* par_merge_sort(void* data) {
     free(r_array);
 }
 
-int main() {
+void fill_with_random_ints(int* array, int n) {
+    // fill
+    for (int i = 0; i < n; i++)
+        array[i] = i;
 
-    int size = 9;
-    int array[] = { 2, 4, 5, 1, 124, 51, 12, 5, 895 };
+    // shuffle
+    for (int i = 0; i < n; i++) {
+        int j = rand() % n;
+        // swap
+        int ai = array[i];
+        int aj = array[j];
+        array[i] = aj;
+        array[j] = ai;
+    }
+};
+
+int main() {
+    int size = 1000000;
+    int array[size];
+
+    fill_with_random_ints(array, size);
 
     array_print(array, size);
     printf("\n");
