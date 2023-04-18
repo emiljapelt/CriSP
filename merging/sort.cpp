@@ -1,24 +1,46 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include "merge.h"
 using namespace std;
 
-void fill_with_random_ints(vector<int>& array, int n) {
+vector<int> vector_of_ints(int size) {
+  vector<int> array(size);
   // fill
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < size; i++)
     array[i] = i;
 
   // shuffle
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < size; i++)
   {
-    int j = rand() % n;
+    int j = rand() % size;
     // swap
     int ai = array[i];
     int aj = array[j];
     array[i] = aj;
     array[j] = ai;
   }
-};
+  return array;
+}
+
+int* array_of_ints(int size) {
+  int* array = (int*)malloc(sizeof(int) * size);
+  // fill
+  for (int i = 0; i < size; i++)
+    array[i] = i;
+
+  // shuffle
+  for (int i = 0; i < size; i++)
+  {
+    int j = rand() % size;
+    // swap
+    int ai = array[i];
+    int aj = array[j];
+    array[i] = aj;
+    array[j] = ai;
+  }
+  return array;
+}
 
 int is_sorted(vector<int>& array, int n) {
   int prev = array[0];
@@ -35,15 +57,15 @@ int is_sorted(vector<int>& array, int n) {
 // 10^9 - 2 min 10 sec
 
 int main() {
-  int size = 1000000000;
-  vector<int> array(size);
+  int size = 10000000;
+  // vector<int> array = vector_of_ints(size);
+  int* array = array_of_ints(size);
 
-  fill_with_random_ints(array, size);
+  // sort(array.begin(), array.end());
+  general_par_merge_sort(proxy_general_args(array, size, 10, 1000));
 
-  sort(array.begin(), array.end());
-
-  if (is_sorted(array, size)) cout << "sorted" << endl;
-  else cout << "not sorted :(" << endl;
+  // if (is_sorted(array, size)) cout << "sorted" << endl;
+  // else cout << "not sorted :(" << endl;
 
   return 0;
 }

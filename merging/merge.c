@@ -24,7 +24,7 @@ void general_seq_merge_sort(int* array, int size, int split) {
     sizes[split-1] = size - ((split-1)*normal_size);
     int offset = 0;
     for(int i = 0; i < split; i++) {
-        arrays[i] = malloc(sizeof(int) * sizes[i]);
+        arrays[i] = (int*) malloc(sizeof(int) * sizes[i]);
         memcpy(arrays[i], array + offset, sizeof(int)*sizes[i]);
         offset += sizes[i];
     }
@@ -53,7 +53,7 @@ void general_seq_merge_sort(int* array, int size, int split) {
 }
 
 void* proxy_general_args(int* array, int size, int split, int limiter) {
-    char* data = malloc(20);
+    void* data = malloc(20);
     *(int**)data = array;
     *(int*)(data+8) = size;
     *(int*)(data+12) = split;
@@ -86,7 +86,7 @@ void* general_par_merge_sort(void* data) {
     sizes[split-1] = size - ((split-1)*normal_size);
     int offset = 0;
     for(int i = 0; i < split; i++) {
-        arrays[i] = malloc(sizeof(int) * sizes[i]);
+        arrays[i] = (int*)malloc(sizeof(int) * sizes[i]);
         memcpy(arrays[i], array + offset, sizeof(int)*sizes[i]);
         offset += sizes[i];
     }
@@ -120,11 +120,11 @@ void* general_par_merge_sort(void* data) {
 void seq_merge_sort(int* array, int size) {
     if (size <= 1) return;
     int l_size = size / 2;
-    int* l_array = malloc(sizeof(int) * l_size);
+    int* l_array = (int*)malloc(sizeof(int) * l_size);
     memcpy(l_array, array, sizeof(int) * l_size);
 
     int r_size = size - l_size;
-    int* r_array = malloc(sizeof(int) * r_size);
+    int* r_array = (int*)malloc(sizeof(int) * r_size);
     memcpy(r_array, array + l_size, sizeof(int) * r_size);
 
     seq_merge_sort(l_array, l_size);
@@ -156,7 +156,7 @@ void seq_merge_sort(int* array, int size) {
 }
 
 void* proxy_args(int* array, int size, int limiter) {
-    char* data = malloc(16);
+    void* data = malloc(16);
     *(int**)data = array;
     *(int*)(data+8) = size;
     *(int*)(data+12) = limiter;
@@ -173,11 +173,11 @@ void* par_merge_sort(void* data) {
     };
 
     int l_size = size / 2;
-    int* l_array = malloc(sizeof(int) * l_size);
+    int* l_array = (int*)malloc(sizeof(int) * l_size);
     memcpy(l_array, array, sizeof(int) * l_size);
 
     int r_size = size - l_size;
-    int* r_array = malloc(sizeof(int) * r_size);
+    int* r_array = (int*)malloc(sizeof(int) * r_size);
     memcpy(r_array, array + l_size, sizeof(int) * r_size);
 
     pthread_t l_pid;
@@ -211,6 +211,7 @@ void* par_merge_sort(void* data) {
     free(data);
     free(l_array);
     free(r_array);
+    return NULL;
 }
 
 char is_sorted(int* array, int size) {
@@ -238,7 +239,7 @@ void fill_with_random_ints(int* array, int n) {
     }
 };
 
-int main() {
+int not_main() {
     int size = 1000000;
     int array[size];
 

@@ -1,1 +1,1 @@
-gcc -pthread ./merge.c -o ./merge.exe
+g++ -pthread ./merge.c ./sort.cpp -o ./merge.exe
