@@ -116,3 +116,13 @@ char is_sorted(uint64* array, uint64 size) {
     }
     return 1;
 }
+
+int thread_count(int split, int limit) {
+    int count = 1;
+    int prev = 1;
+    for(int i = 0; i < limit; i++) {
+        prev *= split;
+        count += prev;
+    }
+    return count;
+}

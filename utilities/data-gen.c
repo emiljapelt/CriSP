@@ -9,7 +9,7 @@
 #include "data-gen.h"
 
 // Implemented using work found at https://www.pcg-random.org/
-void generate_data(uint64** target, uint64 problem_size) {
+void generate_partitioning_data(uint64** target, uint64 problem_size) {
     uint64* data = malloc((2 * sizeof(uint64)) * problem_size);
 
     pcg64_random_t rng;
@@ -19,6 +19,21 @@ void generate_data(uint64** target, uint64 problem_size) {
 
     for(int i = 0; i < problem_size; i++) {
         data[2*i] = pcg64_random_r(&rng);
+    }
+
+    *target = data;
+}
+
+void generate_merging_data(uint64** target, uint64 problem_size) {
+    uint64* data = malloc(sizeof(uint64) * problem_size);
+
+    pcg64_random_t rng;
+    pcg128_t seeds[2];
+    entropy_getbytes((void*)seeds, sizeof(seeds));
+    pcg64_srandom_r(&rng, seeds[0], seeds[1]);
+
+    for(int i = 0; i < problem_size; i++) {
+        data[i] = pcg64_random_r(&rng);
     }
 
     *target = data;

@@ -11,3 +11,4 @@ void print_correct_stats(uint64 *data, uint64 partition_count, uint64 problem_si
 
 void array_print(uint64* array, uint64 size);
 char is_sorted(uint64* array, uint64 size);
+int thread_count(int split, int limit);

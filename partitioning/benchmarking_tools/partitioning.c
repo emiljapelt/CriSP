@@ -78,7 +78,7 @@ void algorithm_correctness_check() {
     uint64* data;
     uint64 partition_count = 1llu << b;
     init_utils(partition_count);
-    generate_data(&data, problem_size);
+    generate_partitioning_data(&data, problem_size);
 
     struct partition_info concurrent_info = partition_concurrent_output(data, problem_size, 16, partition_count);
     struct partition_info countmove_info = partition_count_then_move(data, problem_size, 16, partition_count);
@@ -94,7 +94,7 @@ void run_benchmarks(char *dateString, uint64 problem_size) {
     uint64* data;
     struct timespec start, finish;
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-    generate_data(&data, problem_size);
+    generate_partitioning_data(&data, problem_size);
     clock_gettime(CLOCK_MONOTONIC_RAW, &finish);
     long elapsed_time_ms = (finish.tv_sec - start.tv_sec) * 1000 + (finish.tv_nsec - start.tv_nsec) / 1000000;
     printf("Data generation elapsed time: %lu ms\n", elapsed_time_ms);
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
     // method thread_count partition_count
     if (argc > 2) {
         uint64* data;
-        generate_data(&data, problem_size);
+        generate_partitioning_data(&data, problem_size);
         int method = atoi(argv[1]);
         int thread_count = atoi(argv[2]);
         int partition_count = atoi(argv[3]);
