@@ -1,1 +1,3 @@
-g++ -pthread ./merge.c ./sort.cpp -o ./merge.exe
+clang -pthread ../utilities/pcg-c-0.94/extras/entropy.o ../utilities/pcg-c-0.94/src/pcg-advance-64.o ../utilities/pcg-c-0.94/src/pcg-advance-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-64.o ../utilities/utils.c ../utilities/data-gen.c ./merge.c -o ./merge-clang.exe
+gcc -pthread ../utilities/pcg-c-0.94/extras/entropy.o ../utilities/pcg-c-0.94/src/pcg-advance-64.o ../utilities/pcg-c-0.94/src/pcg-advance-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-64.o ../utilities/utils.c ../utilities/data-gen.c ./merge.c -o ./merge-gcc.exe
+cc -pthread ../utilities/pcg-c-0.94/extras/entropy.o ../utilities/pcg-c-0.94/src/pcg-advance-64.o ../utilities/pcg-c-0.94/src/pcg-advance-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-128.o ../utilities/pcg-c-0.94/src/pcg-rngs-64.o ../utilities/utils.c ../utilities/data-gen.c ./merge.c -o ./merge-cc.exe

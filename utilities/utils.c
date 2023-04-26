@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "utils.h"
 #include "types.h"
@@ -93,11 +94,25 @@ void print_partition_statistic(struct partition_info info, int partition_count) 
     for(int i = 0; i < partition_count; i++) size_sum += info.partition_sizes[i];
     double expected_average = (double)size_sum/partition_count;
     double deviation_sum = 0;
-    for(int i = 0; i < partition_count; i++) deviation_sum += abs(expected_average - info.partition_sizes[i]);
+    for(int i = 0; i < partition_count; i++) deviation_sum += fabs(expected_average - info.partition_sizes[i]);
 
     printf("sum: %lld\n", size_sum);
     printf("max: %lld\n", max_partition_size);
     printf("min: %lld\n", min_partition_size);
     printf("exp-avg: %f\n", expected_average);
     printf("avg-dev: %.3f%%\n", ((deviation_sum/partition_count)/expected_average)*100);
+}
+
+void array_print(uint64* array, uint64 size) {
+    for(uint64 i = 0; i < size; i++) printf("%llu, ", array[i]);
+    printf("\n");
+}
+
+char is_sorted(uint64* array, uint64 size) {
+    uint64 current = array[0];
+    for(int i = 1; i < size; i++) {
+        if (array[i] >= current) continue;
+        else return 0;
+    }
+    return 1;
 }

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "../utilities/types.h"
-#include "../utilities/utils.h"
-#include "../utilities/data-gen.h"
+#include "../../utilities/types.h"
+#include "../../utilities/utils.h"
+#include "../../utilities/data-gen.h"
 #include "../partitioning_methods/count-then-move.h"
 #include "../partitioning_methods/concurrent.h"
 
@@ -84,6 +84,7 @@ void algorithm_correctness_check() {
     struct partition_info countmove_info = partition_count_then_move(data, problem_size, 16, partition_count);
     print_partition_statistic(concurrent_info, partition_count);
     print_partition_statistic(countmove_info, partition_count);
+    print_partitions(countmove_info, partition_count, 1);
     printf("# correct results\n");
     print_correct_stats(data, partition_count, problem_size);
     free(data);
@@ -133,8 +134,8 @@ int main(int argc, char **argv) {
         }
         free(data);
     } else {
-        run_benchmarks(argv[1], problem_size);
-        // algorithm_correctness_check();
+        // run_benchmarks(argv[1], problem_size);
+        algorithm_correctness_check();
     }
     return 0;
 }

@@ -4,37 +4,36 @@
 #include <pthread.h>
 #include <limits.h>
 
-void array_print(int* array, int size) {
-    for(int i = 0; i < size; i++) printf("%i, ", array[i]);
-    printf("\n");
-}
+#include "../utilities/data-gen.h"
+#include "../utilities/types.h"
+#include "../utilities/utils.h"
 
-void general_seq_merge_sort(int* array, int size, int split) {
+void general_seq_merge_sort(uint64* array, uint64 size, int split) {
     if (size == 1) return;
     if (size < split) {
         general_seq_merge_sort(array, size, size);
         return;
     }
 
-    int sizes[split];
-    int* arrays[split];
+    uint64 sizes[split];
+    uint64* arrays[split];
 
-    int normal_size = size / split;
+    uint64 normal_size = size / split;
     for(int i = 0; i < split-1; i++) sizes[i] = normal_size;
     sizes[split-1] = size - ((split-1)*normal_size);
-    int offset = 0;
+    uint64 offset = 0;
     for(int i = 0; i < split; i++) {
-        arrays[i] = (int*) malloc(sizeof(int) * sizes[i]);
-        memcpy(arrays[i], array + offset, sizeof(int)*sizes[i]);
+        arrays[i] = (uint64*) malloc(sizeof(uint64) * sizes[i]);
+        memcpy(arrays[i], array + offset, sizeof(uint64)*sizes[i]);
         offset += sizes[i];
     }
 
     for(int i = 0; i < split; i++) general_seq_merge_sort(arrays[i], sizes[i], split);
-    int merge_indecies[split];
+    uint64 merge_indecies[split];
     for(int i = 0; i < split; i++) merge_indecies[i] = 0;
-    int idx = 0;
+    uint64 idx = 0;
     while(1) {
-        int guess = INT_MAX;
+        uint64 guess = INT_MAX;
         int guess_from = -1;
         for(int i = 0; i < split; i++) {
             if (merge_indecies[i] == sizes[i]) continue;
@@ -52,20 +51,20 @@ void general_seq_merge_sort(int* array, int size, int split) {
     for(int i = 0; i < split; i++) free(arrays[i]);
 }
 
-void* proxy_general_args(int* array, int size, int split, int limiter) {
-    void* data = malloc(20);
-    *(int**)data = array;
-    *(int*)(data+8) = size;
-    *(int*)(data+12) = split;
-    *(int*)(data+16) = limiter;
+void* proxy_general_args(uint64* array, uint64 size, int split, int limiter) {
+    void* data = malloc(24);
+    *(uint64**)data = array;
+    *(uint64*)(data+8) = size;
+    *(int*)(data+16) = split;
+    *(int*)(data+20) = limiter;
     return data;
 }
 
 void* general_par_merge_sort(void* data) {
-    int* array = *(int**)data;
-    int size = *(int*)(data+8);
-    int split = *(int*)(data+12);
-    int limiter = *(int*)(data+16);
+    uint64* array = *(uint64**)data;
+    uint64 size = *(uint64*)(data+8);
+    int split = *(int*)(data+16);
+    int limiter = *(int*)(data+20);
 
     if (size <= limiter) {
         general_seq_merge_sort(array, size, split);
@@ -76,18 +75,18 @@ void* general_par_merge_sort(void* data) {
         return NULL;
     }
 
-    int sizes[split];
-    int* arrays[split];
+    uint64 sizes[split];
+    uint64* arrays[split];
     pthread_t pids[split];
-    int merge_indecies[split];
+    uint64 merge_indecies[split];
 
-    int normal_size = size / split;
+    uint64 normal_size = size / split;
     for(int i = 0; i < split-1; i++) sizes[i] = normal_size;
     sizes[split-1] = size - ((split-1)*normal_size);
-    int offset = 0;
+    uint64 offset = 0;
     for(int i = 0; i < split; i++) {
-        arrays[i] = (int*)malloc(sizeof(int) * sizes[i]);
-        memcpy(arrays[i], array + offset, sizeof(int)*sizes[i]);
+        arrays[i] = (uint64*)malloc(sizeof(uint64) * sizes[i]);
+        memcpy(arrays[i], array + offset, sizeof(uint64)*sizes[i]);
         offset += sizes[i];
     }
 
@@ -97,7 +96,7 @@ void* general_par_merge_sort(void* data) {
 
     int idx = 0;
     while(1) {
-        int guess = INT_MAX;
+        uint64 guess = INT_MAX;
         int guess_from = -1;
         for(int i = 0; i < split; i++) {
             if (merge_indecies[i] == sizes[i]) continue;
@@ -117,20 +116,20 @@ void* general_par_merge_sort(void* data) {
     return NULL;
 }
 
-void seq_merge_sort(int* array, int size) {
+void seq_merge_sort(uint64* array, uint64 size) {
     if (size <= 1) return;
-    int l_size = size / 2;
-    int* l_array = (int*)malloc(sizeof(int) * l_size);
-    memcpy(l_array, array, sizeof(int) * l_size);
+    uint64 l_size = size / 2;
+    uint64* l_array = (uint64*)malloc(sizeof(uint64) * l_size);
+    memcpy(l_array, array, sizeof(uint64) * l_size);
 
-    int r_size = size - l_size;
-    int* r_array = (int*)malloc(sizeof(int) * r_size);
-    memcpy(r_array, array + l_size, sizeof(int) * r_size);
+    uint64 r_size = size - l_size;
+    uint64* r_array = (uint64*)malloc(sizeof(uint64) * r_size);
+    memcpy(r_array, array + l_size, sizeof(uint64) * r_size);
 
     seq_merge_sort(l_array, l_size);
     seq_merge_sort(r_array, r_size);
 
-    int i, l, r;
+    uint64 i, l, r;
     i = 0; l = 0; r = 0;
     while(l < l_size && r < r_size) {
         if (l_array[l] < r_array[r]) {
@@ -143,40 +142,40 @@ void seq_merge_sort(int* array, int size) {
         }
     }
     if (l < l_size) {
-        memcpy(array + i, l_array + l, sizeof(int) * (l_size - l));
+        memcpy(array + i, l_array + l, sizeof(uint64) * (l_size - l));
     }
     if (r < r_size) {
-        memcpy(array + i, r_array + r, sizeof(int) * (r_size - r));
+        memcpy(array + i, r_array + r, sizeof(uint64) * (r_size - r));
     }
 
     free(l_array);
     free(r_array);
 }
 
-void* proxy_args(int* array, int size, int limiter) {
-    void* data = malloc(16);
-    *(int**)data = array;
-    *(int*)(data+8) = size;
-    *(int*)(data+12) = limiter;
+void* proxy_args(uint64* array, uint64 size, int limiter) {
+    void* data = malloc(20);
+    *(uint64**)data = array;
+    *(uint64*)(data+8) = size;
+    *(int*)(data+16) = limiter;
     return data;
 }
 
 void* par_merge_sort(void* data) {
-    int* array = *(int**)data;
-    int size = *(int*)(data+8);
-    int limiter = *(int*)(data+12);
+    uint64* array = *(uint64**)data;
+    uint64 size = *(uint64*)(data+8);
+    int limiter = *(int*)(data+16);
     if (size <= limiter) {
         seq_merge_sort(array, size);
         return NULL;
     };
 
-    int l_size = size / 2;
-    int* l_array = (int*)malloc(sizeof(int) * l_size);
-    memcpy(l_array, array, sizeof(int) * l_size);
+    uint64 l_size = size / 2;
+    uint64* l_array = (uint64*)malloc(sizeof(uint64) * l_size);
+    memcpy(l_array, array, sizeof(uint64) * l_size);
 
-    int r_size = size - l_size;
-    int* r_array = (int*)malloc(sizeof(int) * r_size);
-    memcpy(r_array, array + l_size, sizeof(int) * r_size);
+    uint64 r_size = size - l_size;
+    uint64* r_array = (uint64*)malloc(sizeof(uint64) * r_size);
+    memcpy(r_array, array + l_size, sizeof(uint64) * r_size);
 
     pthread_t l_pid;
     pthread_t r_pid;
@@ -185,7 +184,7 @@ void* par_merge_sort(void* data) {
     pthread_join(l_pid, NULL);
     pthread_join(r_pid, NULL);
 
-    int i, l, r;
+    uint64 i, l, r;
     i = 0; l = 0; r = 0;
     while(l < l_size && r < r_size) {
         if (l_array[l] < r_array[r]) {
@@ -198,10 +197,10 @@ void* par_merge_sort(void* data) {
         }
     }
     if (l < l_size) {
-        memcpy(array + i, l_array + l, sizeof(int) * (l_size - l));
+        memcpy(array + i, l_array + l, sizeof(uint64) * (l_size - l));
     }
     if (r < r_size) {
-        memcpy(array + i, r_array + r, sizeof(int) * (r_size - r));
+        memcpy(array + i, r_array + r, sizeof(uint64) * (r_size - r));
     }
 
     free(data);
@@ -210,43 +209,18 @@ void* par_merge_sort(void* data) {
     return NULL;
 }
 
-char is_sorted(int* array, int size) {
-    int current = array[0];
-    for(int i = 1; i < size; i++) {
-        if (array[i] >= current) continue;
-        else return 0;
-    }
-    return 1;
-}
+int main() {
+    uint64 problem_size = 100000;
 
-void fill_with_random_ints(int* array, int n) {
-    // fill
-    for (int i = 0; i < n; i++)
-        array[i] = i;
-
-    // shuffle
-    for (int i = 0; i < n; i++) {
-        int j = rand() % n;
-        // swap
-        int ai = array[i];
-        int aj = array[j];
-        array[i] = aj;
-        array[j] = ai;
-    }
-};
-
-int not_main() {
-    int size = 100;
-    int array[size];
-
-    fill_with_random_ints(array, size);
-
+    uint64* array;
+    generate_data(&array, problem_size);
+  
     // array_print(array, size);
     // par_merge_sort(proxy_args(array, size, 4));
     // general_par_merge_sort(proxy_general_args(array, size, 4, 100));
-    par_merge_sort(proxy_args(array, size, 1));
+    par_merge_sort(proxy_args(array, problem_size, 10));
 
-    if (is_sorted(array, size)) printf("true\n");
+    if (is_sorted(array, problem_size)) printf("true\n");
     else printf("false\n");
 
     // array_print(array, size);

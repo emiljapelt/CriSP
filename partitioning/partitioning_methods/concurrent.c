@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdatomic.h>
-#include "../utilities/types.h"
+#include "../../utilities/types.h"
 #include "concurrent.h"
 
 void *create_args_concurrent(uint64 *input, uint64 *partitions, uint64 start_index, uint64 thread_section_size, uint64 partition_count, atomic_long *write_indeces, uint64 partition_size)
