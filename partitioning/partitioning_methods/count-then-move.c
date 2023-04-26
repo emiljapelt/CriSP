@@ -19,17 +19,15 @@ void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_report
     while (*counted != -1);
 
 // Calculate partition starting indecies
-    uint64 partition_starts[partition_count];
-    partition_starts[0] = 0;
+    uint64 partition_offsets[partition_count];
+    partition_offsets[0] = 0;
     for(uint64 p = 1; p < partition_count; p++) {
-        partition_starts[p] = partition_starts[p-1];
+        partition_offsets[p] = partition_offsets[p-1];
         for(uint64 t = 0; t < thread_count; t++) 
-            partition_starts[p] += 2 * count_reports[(t*partition_count)+(p-1)];
+            partition_offsets[p] += 2 * count_reports[(t*partition_count)+(p-1)];
     }
 
 // Calculate initial partition offsets
-    uint64 partition_offsets[partition_count];
-    for(uint64 o = 0; o < partition_count; o++) partition_offsets[o] = 0;
     for(uint64 p = 0; p < partition_count; p++) {
         for(uint64 t = 0; t < thread_id; t++) partition_offsets[p] += 2*count_reports[(t*partition_count)+p];
     }
@@ -37,8 +35,8 @@ void count_then_move(uint64 thread_id, uint64 thread_count, uint64* count_report
 // Move data to output
     for(uint64 i = 0; i < work_size; i++) {
         uint64 h = hash(input[(2*start_index)+(2*i)]);
-        output[partition_starts[h]+partition_offsets[h]] = input[(2*start_index)+(2*i)];
-        output[partition_starts[h]+partition_offsets[h]+1] = input[(2*start_index)+(2*i)+1];
+        output[partition_offsets[h]] = input[(2*start_index)+(2*i)];
+        output[partition_offsets[h]+1] = input[(2*start_index)+(2*i)+1];
         partition_offsets[h] += 2;
     }
 }
