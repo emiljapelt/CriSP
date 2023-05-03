@@ -130,8 +130,8 @@ void* better_par_merge_sort(void* data) {
 
     if (cleaning) free(*array);
     pthread_t child_pid;
-    pthread_create(&child_pid, NULL, par_merge_sort, proxy_args(&r_array, r_size, limiter-1, cleaning));
-    par_merge_sort(proxy_args(&l_array, l_size, limiter-1, cleaning));
+    pthread_create(&child_pid, NULL, better_par_merge_sort, proxy_args(&r_array, r_size, limiter-1, cleaning));
+    better_par_merge_sort(proxy_args(&l_array, l_size, limiter-1, cleaning));
     pthread_join(child_pid, NULL);
     if (cleaning) *array = (uint64*)malloc(sizeof(uint64) * size);
 
