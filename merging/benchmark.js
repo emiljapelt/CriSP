@@ -124,11 +124,16 @@ async function run_combinations(max_depth, data_size, repetitions, metric) {
     return combinations;
 }
 
+function getDateString() {
+    const date = new Date()
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}_${date.getHours()}-${date.getMinutes()}`
+}
+
 async function main() {
     await runProcess("./bench_compile.sh", []);
     const basePath = "./benchmark_data";
     if (!fs.existsSync(basePath)) await mkdirAsync(basePath);
-    const now = (new Date()).toLocaleString().replace(" ", "_")
+    const now = getDateString()
     const dir = basePath + "/" + now
 
     await mkdirAsync(dir)
