@@ -8,6 +8,8 @@ var Compiler;
   Compiler[(Compiler["TCC"] = 1)] = "TCC";
 })(Compiler || (Compiler = {}));
 
+const compilers = ["gcc", "tcc", "clang"]
+
 const metrics = [
     "instructions",
     "cpu-cycles"
@@ -48,7 +50,6 @@ async function run_benchmarks(compiler, depth, arity, data_size, repetitions) {
             `${arity}`,
             `${data_size}`,
         ]);
-        console.log(processOutput)
         let match;
         const matches = [];
         while ((match = regex.exec(processOutput)) !== null) {
@@ -67,6 +68,32 @@ async function run_benchmarks(compiler, depth, arity, data_size, repetitions) {
     return results;
 }
 
-run_benchmarks("tcc", 2, 2, 1000000, 3).then((results) => {
-    console.log(results);
-})
+function calculate_standard_deviation(data, metric) {
+    const average = data.reduce((acc, curr) => acc + curr[metric], 0) / data.length;
+    const variance = data.map((x) => Math.pow(x[metric] - average, 2)).reduce((a, b) => a + b) / data.length;
+    return Math.sqrt(variance);
+}
+
+function get_run_stddev(data) {
+    const res = {};
+    for (const metric of [...metrics, "ms-elapsed"]) {
+        res[metric] = calculate_standard_deviation(data, metric);
+    }
+    return res;
+}
+
+function get_averages(data) {
+    const ms_elapsed = data.reduce((acc, curr) => acc + curr["ms-elapsed"], 0) / data.length;
+    const instructions = data.reduce((acc, curr) => acc + curr["instructions"], 0) / data.length;
+    const cpu_cycles = data.reduce((acc, curr) => acc + curr["cpu-cycles"], 0) / data.length;
+    return {"instructions": instructions, "cpu-cycles": cpu_cycles, "ms-elapsed": ms_elapsed};
+}
+
+async function main() {
+    const tcc_results = await run_benchmarks("tcc", 2, 2, 1000000, 3);
+    const standard_deviations = get_run_stddev(tcc_results);
+    const averages = get_averages(tcc_results);
+    console.log("standard deviation", standard_deviations);
+    console.log("averages", averages)
+}
+main()
