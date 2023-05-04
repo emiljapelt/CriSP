@@ -10,6 +10,7 @@
         "time.h": "c",
         "limits": "c",
         "pcg_variants.h": "c",
-        "entropy.h": "c"
+        "entropy.h": "c",
+        "general-merge-sort.h": "c"
     }
 }
