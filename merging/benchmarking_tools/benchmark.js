@@ -101,14 +101,14 @@ function get_averages(data) {
     };
 }
 
-async function run_combinations(max_depth, data_size, repetitions, compiler) {
+async function run_combinations(max_depth, arity, data_size, repetitions, compiler) {
     const combinations = []
     for (let depth = 0; depth <= max_depth; depth++) {
         console.log(depth)
         const tcc_results = await run_benchmarks(
             compiler,
             depth,
-            2,
+            arity,
             data_size,
             repetitions
         );
@@ -136,11 +136,12 @@ async function main() {
     const max_depth = 5;
     const data_size = 10000000;
     const repetitions = 20;
+    const arity = 4;
 
     const combination_results = []
     for (const compiler of compilers) {
         console.log(compiler)
-        const result = await run_combinations(max_depth, data_size, repetitions, compiler)
+        const result = await run_combinations(max_depth, arity, data_size, repetitions, compiler)
         combination_results.push(result)
     }
 
