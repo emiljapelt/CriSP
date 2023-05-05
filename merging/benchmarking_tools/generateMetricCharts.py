@@ -18,12 +18,18 @@ for file in file_list:
     
     metric = file[:-4]
     df = pd.read_csv(directory + file, names=['Category', "tcc", "clang-default", "clang-O2", "gcc-default", "gcc-O2", "gcc-O3", "gcc-Os"], skiprows=1)
+    if file.__contains__("ms-elapsed"):
+        df.iloc[:, 1:] = 10000000 / (df.iloc[:, 1:]/1000)
 
     ax = df.plot(kind='line', x='Category', y=["tcc", "clang-default", "clang-O2", "gcc-default", "gcc-O2", "gcc-O3", "gcc-Os"], marker='o', legend=True)
     plt.legend(title="Compiler")
     
-    ax.set_ylabel(metric)
-    ax.set_title(metric)
+    if file.__contains__("ms-elapsed"):
+        ax.set_ylabel("Sorted items per second")
+        ax.set_title("Sorted items per second")
+    else:
+        ax.set_ylabel(metric)
+        ax.set_title(metric)
 
     ax.set_ylim(ymin=0)
 
