@@ -5,7 +5,7 @@ import sys
 import os
 
 # directory should be the path to the folder of either CONCURRENT_OUTPUT or COUNT_THEN_MOVE
-directory = sys.argv[1] + "/averages/"
+directory = sys.argv[1] + "/averages"
 file_list = os.listdir(directory)
 # print(file_list)
 
@@ -17,7 +17,7 @@ for file in file_list:
         continue
     
     metric = file[:-4]
-    df = pd.read_csv(directory + file, names=['Category', "tcc", "clang-default", "clang-O2", "gcc-default", "gcc-O2", "gcc-O3", "gcc-Os"], skiprows=1)
+    df = pd.read_csv(directory + "/" + file, names=['Category', "tcc", "clang-default", "clang-O2", "gcc-default", "gcc-O2", "gcc-O3", "gcc-Os"], skiprows=1)
     if file.__contains__("ms-elapsed"):
         df.iloc[:, 1:] = 10000000 / (df.iloc[:, 1:]/1000)
 
