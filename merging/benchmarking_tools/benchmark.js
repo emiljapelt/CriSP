@@ -131,7 +131,7 @@ async function main() {
     const arity = 4;
 
     await runProcess("./bench_compile.sh", []);
-    const basePath = "./benchmark_data";
+    const basePath = "../benchmark_data";
     if (!fs.existsSync(basePath)) await mkdirAsync(basePath);
     const now = getDateString()
     const dir = `${basePath}/${now}_arity-${arity}`
