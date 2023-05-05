@@ -110,6 +110,7 @@ function get_averages(data) {
 async function run_combinations(max_depth, data_size, repetitions, metric) {
     const combinations = []
     for (let depth = 0; depth <= max_depth; depth++) {
+        console.log(depth)
         const tcc_results = await run_benchmarks(
             metric,
             depth,
@@ -139,12 +140,14 @@ async function main() {
     await mkdirAsync(dir)
 
     const max_depth = 4;
-    const data_size = 10000000;
-    const repetitions = 20;
+    const data_size = 1000000;
+    const repetitions = 3;
+    console.log("tcc")
     const tcc_combinations = await run_combinations(max_depth, data_size, repetitions, "tcc");
+    console.log("gcc")
     const gcc_combinations = await run_combinations(max_depth, data_size, repetitions, "gcc");
+    console.log("clang")
     const clang_combinations = await run_combinations(max_depth, data_size, repetitions, "clang");
-    console.log(tcc_combinations)
     
     for (let type of ["standard_deviations", "averages"]) {
         const typeDir = `${dir}/${type}`
@@ -156,6 +159,11 @@ async function main() {
             }
             fs.writeFileSync(`${typeDir}/${metric}.csv`, csvCollector.join("\n"))
         }
+        const csvCollector = [",tcc,gcc,clang"]
+        for (let i = 0; i <= max_depth; i++) {
+            csvCollector.push(`${i},${tcc_combinations[i][type]["instructions"] / tcc_combinations[i][type]["cpu-cycles"]},${gcc_combinations[i][type]["instructions"] / tcc_combinations[i][type]["cpu-cycles"]},${tcc_combinations[i][type]["instructions"] / clang_combinations[i][type]["cpu-cycles"]}`)
+        }
+        fs.writeFileSync(`${typeDir}/instrutions_per_clock.csv`, csvCollector.join("\n"))
     }
 }
 
