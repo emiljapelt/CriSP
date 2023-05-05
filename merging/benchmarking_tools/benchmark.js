@@ -125,18 +125,19 @@ function getDateString() {
 }
 
 async function main() {
-    await runProcess("./bench_compile.sh", []);
-    const basePath = "./benchmark_data";
-    if (!fs.existsSync(basePath)) await mkdirAsync(basePath);
-    const now = getDateString()
-    const dir = basePath + "/" + now
-
-    await mkdirAsync(dir)
-
     const max_depth = 5;
     const data_size = 10000000;
     const repetitions = 20;
     const arity = 4;
+
+    await runProcess("./bench_compile.sh", []);
+    const basePath = "./benchmark_data";
+    if (!fs.existsSync(basePath)) await mkdirAsync(basePath);
+    const now = getDateString()
+    const dir = `${basePath}/${now}_arity-${arity}`
+
+    await mkdirAsync(dir)
+
 
     const combination_results = []
     for (const compiler of compilers) {
