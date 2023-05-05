@@ -133,9 +133,9 @@ async function main() {
 
     await mkdirAsync(dir)
 
-    const max_depth = 4;
-    const data_size = 1000000;
-    const repetitions = 3;
+    const max_depth = 5;
+    const data_size = 10000000;
+    const repetitions = 20;
 
     const combination_results = []
     for (const compiler of compilers) {
