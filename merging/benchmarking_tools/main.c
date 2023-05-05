@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "../utilities/utils.h"
-#include "./implementations/merge-sort.h"
+#include "../../utilities/utils.h"
+#include "../implementations/merge-sort.h"
 
 void generateData(uint64** array, uint64 size) {
     srand(time(NULL)); 
