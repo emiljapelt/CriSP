@@ -1,39 +1,9 @@
-const child_process = require("child_process");
 const fs = require("fs");
+const {mkdirAsync, runProcess} = require("../../utilities/js_helpers")
 
 const compilers = ["tcc", "clang-default", "clang-O2", "gcc-default", "gcc-O2", "gcc-O3", "gcc-Os"];
 
 const metrics = ["instructions", "cpu-cycles"];
-
-function runProcess(command, args) {
-    return new Promise((resolve, reject) => {
-        try {
-            const prcs = child_process.spawn(command, args);
-            const chunks = [];
-            const errorHandler = (buf) => reject(buf.toString().trim());
-            prcs.once("error", errorHandler);
-            prcs.stderr.on("data", (buf) => chunks.push(buf));
-            prcs.stdout.on("data", (buf) => chunks.push(buf));
-            prcs.stdout.on("end", () => {
-                resolve(Buffer.concat(chunks).toString().trim());
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
-}
-
-function mkdirAsync(path) {
-    return new Promise((resolve, reject) => {
-        fs.mkdir(path, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
-}
 
 async function run_benchmarks(compiler, depth, arity, data_size, repetitions) {
     const results = [];
