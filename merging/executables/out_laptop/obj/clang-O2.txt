@@ -1,0 +1,1047 @@
+../executables/out_laptop/merge-clang-O2-bench.exe:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+0000000000401000 <_init>:
+  401000:	f3 0f 1e fa          	endbr64 
+  401004:	48 83 ec 08          	sub    $0x8,%rsp
+  401008:	48 8b 05 e9 2f 00 00 	mov    0x2fe9(%rip),%rax        # 403ff8 <__gmon_start__>
+  40100f:	48 85 c0             	test   %rax,%rax
+  401012:	74 02                	je     401016 <_init+0x16>
+  401014:	ff d0                	callq  *%rax
+  401016:	48 83 c4 08          	add    $0x8,%rsp
+  40101a:	c3                   	retq   
+
+Disassembly of section .plt:
+
+0000000000401020 <.plt>:
+  401020:	ff 35 e2 2f 00 00    	pushq  0x2fe2(%rip)        # 404008 <_GLOBAL_OFFSET_TABLE_+0x8>
+  401026:	ff 25 e4 2f 00 00    	jmpq   *0x2fe4(%rip)        # 404010 <_GLOBAL_OFFSET_TABLE_+0x10>
+  40102c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000401030 <free@plt>:
+  401030:	ff 25 e2 2f 00 00    	jmpq   *0x2fe2(%rip)        # 404018 <free@GLIBC_2.2.5>
+  401036:	68 00 00 00 00       	pushq  $0x0
+  40103b:	e9 e0 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401040 <pthread_create@plt>:
+  401040:	ff 25 da 2f 00 00    	jmpq   *0x2fda(%rip)        # 404020 <pthread_create@GLIBC_2.2.5>
+  401046:	68 01 00 00 00       	pushq  $0x1
+  40104b:	e9 d0 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401050 <clock_gettime@plt>:
+  401050:	ff 25 d2 2f 00 00    	jmpq   *0x2fd2(%rip)        # 404028 <clock_gettime@GLIBC_2.17>
+  401056:	68 02 00 00 00       	pushq  $0x2
+  40105b:	e9 c0 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401060 <printf@plt>:
+  401060:	ff 25 ca 2f 00 00    	jmpq   *0x2fca(%rip)        # 404030 <printf@GLIBC_2.2.5>
+  401066:	68 03 00 00 00       	pushq  $0x3
+  40106b:	e9 b0 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401070 <memset@plt>:
+  401070:	ff 25 c2 2f 00 00    	jmpq   *0x2fc2(%rip)        # 404038 <memset@GLIBC_2.2.5>
+  401076:	68 04 00 00 00       	pushq  $0x4
+  40107b:	e9 a0 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401080 <srand@plt>:
+  401080:	ff 25 ba 2f 00 00    	jmpq   *0x2fba(%rip)        # 404040 <srand@GLIBC_2.2.5>
+  401086:	68 05 00 00 00       	pushq  $0x5
+  40108b:	e9 90 ff ff ff       	jmpq   401020 <.plt>
+
+0000000000401090 <strtol@plt>:
+  401090:	ff 25 b2 2f 00 00    	jmpq   *0x2fb2(%rip)        # 404048 <strtol@GLIBC_2.2.5>
+  401096:	68 06 00 00 00       	pushq  $0x6
+  40109b:	e9 80 ff ff ff       	jmpq   401020 <.plt>
+
+00000000004010a0 <memcpy@plt>:
+  4010a0:	ff 25 aa 2f 00 00    	jmpq   *0x2faa(%rip)        # 404050 <memcpy@GLIBC_2.14>
+  4010a6:	68 07 00 00 00       	pushq  $0x7
+  4010ab:	e9 70 ff ff ff       	jmpq   401020 <.plt>
+
+00000000004010b0 <time@plt>:
+  4010b0:	ff 25 a2 2f 00 00    	jmpq   *0x2fa2(%rip)        # 404058 <time@GLIBC_2.2.5>
+  4010b6:	68 08 00 00 00       	pushq  $0x8
+  4010bb:	e9 60 ff ff ff       	jmpq   401020 <.plt>
+
+00000000004010c0 <malloc@plt>:
+  4010c0:	ff 25 9a 2f 00 00    	jmpq   *0x2f9a(%rip)        # 404060 <malloc@GLIBC_2.2.5>
+  4010c6:	68 09 00 00 00       	pushq  $0x9
+  4010cb:	e9 50 ff ff ff       	jmpq   401020 <.plt>
+
+00000000004010d0 <pthread_join@plt>:
+  4010d0:	ff 25 92 2f 00 00    	jmpq   *0x2f92(%rip)        # 404068 <pthread_join@GLIBC_2.2.5>
+  4010d6:	68 0a 00 00 00       	pushq  $0xa
+  4010db:	e9 40 ff ff ff       	jmpq   401020 <.plt>
+
+00000000004010e0 <rand@plt>:
+  4010e0:	ff 25 8a 2f 00 00    	jmpq   *0x2f8a(%rip)        # 404070 <rand@GLIBC_2.2.5>
+  4010e6:	68 0b 00 00 00       	pushq  $0xb
+  4010eb:	e9 30 ff ff ff       	jmpq   401020 <.plt>
+
+Disassembly of section .text:
+
+00000000004010f0 <_start>:
+  4010f0:	f3 0f 1e fa          	endbr64 
+  4010f4:	31 ed                	xor    %ebp,%ebp
+  4010f6:	49 89 d1             	mov    %rdx,%r9
+  4010f9:	5e                   	pop    %rsi
+  4010fa:	48 89 e2             	mov    %rsp,%rdx
+  4010fd:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp
+  401101:	50                   	push   %rax
+  401102:	54                   	push   %rsp
+  401103:	49 c7 c0 a0 1d 40 00 	mov    $0x401da0,%r8
+  40110a:	48 c7 c1 30 1d 40 00 	mov    $0x401d30,%rcx
+  401111:	48 c7 c7 e0 1b 40 00 	mov    $0x401be0,%rdi
+  401118:	ff 15 d2 2e 00 00    	callq  *0x2ed2(%rip)        # 403ff0 <__libc_start_main@GLIBC_2.2.5>
+  40111e:	f4                   	hlt    
+  40111f:	90                   	nop
+
+0000000000401120 <_dl_relocate_static_pie>:
+  401120:	f3 0f 1e fa          	endbr64 
+  401124:	c3                   	retq   
+  401125:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  40112c:	00 00 00 
+  40112f:	90                   	nop
+
+0000000000401130 <deregister_tm_clones>:
+  401130:	b8 88 40 40 00       	mov    $0x404088,%eax
+  401135:	48 3d 88 40 40 00    	cmp    $0x404088,%rax
+  40113b:	74 13                	je     401150 <deregister_tm_clones+0x20>
+  40113d:	b8 00 00 00 00       	mov    $0x0,%eax
+  401142:	48 85 c0             	test   %rax,%rax
+  401145:	74 09                	je     401150 <deregister_tm_clones+0x20>
+  401147:	bf 88 40 40 00       	mov    $0x404088,%edi
+  40114c:	ff e0                	jmpq   *%rax
+  40114e:	66 90                	xchg   %ax,%ax
+  401150:	c3                   	retq   
+  401151:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  401158:	00 00 00 00 
+  40115c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+0000000000401160 <register_tm_clones>:
+  401160:	be 88 40 40 00       	mov    $0x404088,%esi
+  401165:	48 81 ee 88 40 40 00 	sub    $0x404088,%rsi
+  40116c:	48 89 f0             	mov    %rsi,%rax
+  40116f:	48 c1 ee 3f          	shr    $0x3f,%rsi
+  401173:	48 c1 f8 03          	sar    $0x3,%rax
+  401177:	48 01 c6             	add    %rax,%rsi
+  40117a:	48 d1 fe             	sar    %rsi
+  40117d:	74 11                	je     401190 <register_tm_clones+0x30>
+  40117f:	b8 00 00 00 00       	mov    $0x0,%eax
+  401184:	48 85 c0             	test   %rax,%rax
+  401187:	74 07                	je     401190 <register_tm_clones+0x30>
+  401189:	bf 88 40 40 00       	mov    $0x404088,%edi
+  40118e:	ff e0                	jmpq   *%rax
+  401190:	c3                   	retq   
+  401191:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  401198:	00 00 00 00 
+  40119c:	0f 1f 40 00          	nopl   0x0(%rax)
+
+00000000004011a0 <__do_global_dtors_aux>:
+  4011a0:	f3 0f 1e fa          	endbr64 
+  4011a4:	80 3d dd 2e 00 00 00 	cmpb   $0x0,0x2edd(%rip)        # 404088 <__TMC_END__>
+  4011ab:	75 13                	jne    4011c0 <__do_global_dtors_aux+0x20>
+  4011ad:	55                   	push   %rbp
+  4011ae:	48 89 e5             	mov    %rsp,%rbp
+  4011b1:	e8 7a ff ff ff       	callq  401130 <deregister_tm_clones>
+  4011b6:	c6 05 cb 2e 00 00 01 	movb   $0x1,0x2ecb(%rip)        # 404088 <__TMC_END__>
+  4011bd:	5d                   	pop    %rbp
+  4011be:	c3                   	retq   
+  4011bf:	90                   	nop
+  4011c0:	c3                   	retq   
+  4011c1:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  4011c8:	00 00 00 00 
+  4011cc:	0f 1f 40 00          	nopl   0x0(%rax)
+
+00000000004011d0 <frame_dummy>:
+  4011d0:	f3 0f 1e fa          	endbr64 
+  4011d4:	eb 8a                	jmp    401160 <register_tm_clones>
+  4011d6:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  4011dd:	00 00 00 
+
+00000000004011e0 <seq_merge_sort>:
+  4011e0:	48 83 fe 02          	cmp    $0x2,%rsi
+  4011e4:	0f 82 bf 01 00 00    	jb     4013a9 <seq_merge_sort+0x1c9>
+  4011ea:	55                   	push   %rbp
+  4011eb:	41 57                	push   %r15
+  4011ed:	41 56                	push   %r14
+  4011ef:	41 55                	push   %r13
+  4011f1:	41 54                	push   %r12
+  4011f3:	53                   	push   %rbx
+  4011f4:	48 83 ec 18          	sub    $0x18,%rsp
+  4011f8:	41 89 d5             	mov    %edx,%r13d
+  4011fb:	48 89 f3             	mov    %rsi,%rbx
+  4011fe:	49 89 fe             	mov    %rdi,%r14
+  401201:	49 89 f7             	mov    %rsi,%r15
+  401204:	49 d1 ef             	shr    %r15
+  401207:	4a 8d 2c fd 00 00 00 	lea    0x0(,%r15,8),%rbp
+  40120e:	00 
+  40120f:	48 89 ef             	mov    %rbp,%rdi
+  401212:	e8 a9 fe ff ff       	callq  4010c0 <malloc@plt>
+  401217:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  40121c:	4c 89 74 24 10       	mov    %r14,0x10(%rsp)
+  401221:	4d 8b 36             	mov    (%r14),%r14
+  401224:	48 89 c7             	mov    %rax,%rdi
+  401227:	4c 89 f6             	mov    %r14,%rsi
+  40122a:	48 89 ea             	mov    %rbp,%rdx
+  40122d:	e8 6e fe ff ff       	callq  4010a0 <memcpy@plt>
+  401232:	49 89 dc             	mov    %rbx,%r12
+  401235:	4d 29 fc             	sub    %r15,%r12
+  401238:	4a 8d 2c e5 00 00 00 	lea    0x0(,%r12,8),%rbp
+  40123f:	00 
+  401240:	48 89 ef             	mov    %rbp,%rdi
+  401243:	e8 78 fe ff ff       	callq  4010c0 <malloc@plt>
+  401248:	48 89 04 24          	mov    %rax,(%rsp)
+  40124c:	4b 8d 34 fe          	lea    (%r14,%r15,8),%rsi
+  401250:	48 89 c7             	mov    %rax,%rdi
+  401253:	48 89 ea             	mov    %rbp,%rdx
+  401256:	e8 45 fe ff ff       	callq  4010a0 <memcpy@plt>
+  40125b:	45 84 ed             	test   %r13b,%r13b
+  40125e:	74 41                	je     4012a1 <seq_merge_sort+0xc1>
+  401260:	4c 89 f7             	mov    %r14,%rdi
+  401263:	e8 c8 fd ff ff       	callq  401030 <free@plt>
+  401268:	41 0f be ed          	movsbl %r13b,%ebp
+  40126c:	48 8d 7c 24 08       	lea    0x8(%rsp),%rdi
+  401271:	4c 89 fe             	mov    %r15,%rsi
+  401274:	89 ea                	mov    %ebp,%edx
+  401276:	e8 65 ff ff ff       	callq  4011e0 <seq_merge_sort>
+  40127b:	48 89 e7             	mov    %rsp,%rdi
+  40127e:	4c 89 e6             	mov    %r12,%rsi
+  401281:	89 ea                	mov    %ebp,%edx
+  401283:	e8 58 ff ff ff       	callq  4011e0 <seq_merge_sort>
+  401288:	48 c1 e3 03          	shl    $0x3,%rbx
+  40128c:	48 89 df             	mov    %rbx,%rdi
+  40128f:	e8 2c fe ff ff       	callq  4010c0 <malloc@plt>
+  401294:	48 8b 4c 24 10       	mov    0x10(%rsp),%rcx
+  401299:	49 89 cd             	mov    %rcx,%r13
+  40129c:	48 89 01             	mov    %rax,(%rcx)
+  40129f:	eb 21                	jmp    4012c2 <seq_merge_sort+0xe2>
+  4012a1:	4c 8b 6c 24 10       	mov    0x10(%rsp),%r13
+  4012a6:	48 8d 7c 24 08       	lea    0x8(%rsp),%rdi
+  4012ab:	4c 89 fe             	mov    %r15,%rsi
+  4012ae:	31 d2                	xor    %edx,%edx
+  4012b0:	e8 2b ff ff ff       	callq  4011e0 <seq_merge_sort>
+  4012b5:	48 89 e7             	mov    %rsp,%rdi
+  4012b8:	4c 89 e6             	mov    %r12,%rsi
+  4012bb:	31 d2                	xor    %edx,%edx
+  4012bd:	e8 1e ff ff ff       	callq  4011e0 <seq_merge_sort>
+  4012c2:	4d 85 e4             	test   %r12,%r12
+  4012c5:	41 0f 95 c6          	setne  %r14b
+  4012c9:	0f 84 db 00 00 00    	je     4013aa <seq_merge_sort+0x1ca>
+  4012cf:	4c 8b 44 24 08       	mov    0x8(%rsp),%r8
+  4012d4:	48 8b 14 24          	mov    (%rsp),%rdx
+  4012d8:	49 8b 75 00          	mov    0x0(%r13),%rsi
+  4012dc:	31 ed                	xor    %ebp,%ebp
+  4012de:	31 c0                	xor    %eax,%eax
+  4012e0:	31 db                	xor    %ebx,%ebx
+  4012e2:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  4012e9:	00 00 00 
+  4012ec:	0f 1f 40 00          	nopl   0x0(%rax)
+  4012f0:	49 8b 0c c0          	mov    (%r8,%rax,8),%rcx
+  4012f4:	48 8b 3c ea          	mov    (%rdx,%rbp,8),%rdi
+  4012f8:	48 39 f9             	cmp    %rdi,%rcx
+  4012fb:	73 13                	jae    401310 <seq_merge_sort+0x130>
+  4012fd:	48 89 0c de          	mov    %rcx,(%rsi,%rbx,8)
+  401301:	48 83 c0 01          	add    $0x1,%rax
+  401305:	eb 11                	jmp    401318 <seq_merge_sort+0x138>
+  401307:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  40130e:	00 00 
+  401310:	48 89 3c de          	mov    %rdi,(%rsi,%rbx,8)
+  401314:	48 83 c5 01          	add    $0x1,%rbp
+  401318:	48 83 c3 01          	add    $0x1,%rbx
+  40131c:	49 39 ec             	cmp    %rbp,%r12
+  40131f:	41 0f 97 c6          	seta   %r14b
+  401323:	49 39 c7             	cmp    %rax,%r15
+  401326:	0f 97 c1             	seta   %cl
+  401329:	76 05                	jbe    401330 <seq_merge_sort+0x150>
+  40132b:	49 39 ec             	cmp    %rbp,%r12
+  40132e:	77 c0                	ja     4012f0 <seq_merge_sort+0x110>
+  401330:	84 c9                	test   %cl,%cl
+  401332:	74 28                	je     40135c <seq_merge_sort+0x17c>
+  401334:	48 8d 3c dd 00 00 00 	lea    0x0(,%rbx,8),%rdi
+  40133b:	00 
+  40133c:	49 03 7d 00          	add    0x0(%r13),%rdi
+  401340:	48 8d 34 c5 00 00 00 	lea    0x0(,%rax,8),%rsi
+  401347:	00 
+  401348:	48 03 74 24 08       	add    0x8(%rsp),%rsi
+  40134d:	49 29 c7             	sub    %rax,%r15
+  401350:	49 c1 e7 03          	shl    $0x3,%r15
+  401354:	4c 89 fa             	mov    %r15,%rdx
+  401357:	e8 44 fd ff ff       	callq  4010a0 <memcpy@plt>
+  40135c:	45 84 f6             	test   %r14b,%r14b
+  40135f:	74 24                	je     401385 <seq_merge_sort+0x1a5>
+  401361:	48 c1 e3 03          	shl    $0x3,%rbx
+  401365:	49 03 5d 00          	add    0x0(%r13),%rbx
+  401369:	4c 8b 34 24          	mov    (%rsp),%r14
+  40136d:	49 8d 34 ee          	lea    (%r14,%rbp,8),%rsi
+  401371:	49 29 ec             	sub    %rbp,%r12
+  401374:	49 c1 e4 03          	shl    $0x3,%r12
+  401378:	48 89 df             	mov    %rbx,%rdi
+  40137b:	4c 89 e2             	mov    %r12,%rdx
+  40137e:	e8 1d fd ff ff       	callq  4010a0 <memcpy@plt>
+  401383:	eb 04                	jmp    401389 <seq_merge_sort+0x1a9>
+  401385:	4c 8b 34 24          	mov    (%rsp),%r14
+  401389:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
+  40138e:	e8 9d fc ff ff       	callq  401030 <free@plt>
+  401393:	4c 89 f7             	mov    %r14,%rdi
+  401396:	e8 95 fc ff ff       	callq  401030 <free@plt>
+  40139b:	48 83 c4 18          	add    $0x18,%rsp
+  40139f:	5b                   	pop    %rbx
+  4013a0:	41 5c                	pop    %r12
+  4013a2:	41 5d                	pop    %r13
+  4013a4:	41 5e                	pop    %r14
+  4013a6:	41 5f                	pop    %r15
+  4013a8:	5d                   	pop    %rbp
+  4013a9:	c3                   	retq   
+  4013aa:	31 db                	xor    %ebx,%ebx
+  4013ac:	b1 01                	mov    $0x1,%cl
+  4013ae:	31 c0                	xor    %eax,%eax
+  4013b0:	31 ed                	xor    %ebp,%ebp
+  4013b2:	84 c9                	test   %cl,%cl
+  4013b4:	0f 85 7a ff ff ff    	jne    401334 <seq_merge_sort+0x154>
+  4013ba:	eb a0                	jmp    40135c <seq_merge_sort+0x17c>
+  4013bc:	0f 1f 40 00          	nopl   0x0(%rax)
+
+00000000004013c0 <proxy_args>:
+  4013c0:	55                   	push   %rbp
+  4013c1:	41 57                	push   %r15
+  4013c3:	41 56                	push   %r14
+  4013c5:	41 54                	push   %r12
+  4013c7:	53                   	push   %rbx
+  4013c8:	45 89 c6             	mov    %r8d,%r14d
+  4013cb:	41 89 cf             	mov    %ecx,%r15d
+  4013ce:	41 89 d4             	mov    %edx,%r12d
+  4013d1:	48 89 f5             	mov    %rsi,%rbp
+  4013d4:	48 89 fb             	mov    %rdi,%rbx
+  4013d7:	bf 19 00 00 00       	mov    $0x19,%edi
+  4013dc:	e8 df fc ff ff       	callq  4010c0 <malloc@plt>
+  4013e1:	48 89 18             	mov    %rbx,(%rax)
+  4013e4:	48 89 68 08          	mov    %rbp,0x8(%rax)
+  4013e8:	44 89 60 10          	mov    %r12d,0x10(%rax)
+  4013ec:	44 89 78 14          	mov    %r15d,0x14(%rax)
+  4013f0:	44 88 70 18          	mov    %r14b,0x18(%rax)
+  4013f4:	5b                   	pop    %rbx
+  4013f5:	41 5c                	pop    %r12
+  4013f7:	41 5e                	pop    %r14
+  4013f9:	41 5f                	pop    %r15
+  4013fb:	5d                   	pop    %rbp
+  4013fc:	c3                   	retq   
+  4013fd:	0f 1f 00             	nopl   (%rax)
+
+0000000000401400 <par_merge_sort>:
+  401400:	55                   	push   %rbp
+  401401:	41 57                	push   %r15
+  401403:	41 56                	push   %r14
+  401405:	41 55                	push   %r13
+  401407:	41 54                	push   %r12
+  401409:	53                   	push   %rbx
+  40140a:	48 83 ec 48          	sub    $0x48,%rsp
+  40140e:	48 89 fb             	mov    %rdi,%rbx
+  401411:	4c 8b 37             	mov    (%rdi),%r14
+  401414:	4c 8b 6f 08          	mov    0x8(%rdi),%r13
+  401418:	44 8b 7f 10          	mov    0x10(%rdi),%r15d
+  40141c:	8a 47 18             	mov    0x18(%rdi),%al
+  40141f:	45 85 ff             	test   %r15d,%r15d
+  401422:	0f 84 13 02 00 00    	je     40163b <par_merge_sort+0x23b>
+  401428:	49 83 fd 02          	cmp    $0x2,%r13
+  40142c:	0f 82 1f 02 00 00    	jb     401651 <par_merge_sort+0x251>
+  401432:	48 89 5c 24 30       	mov    %rbx,0x30(%rsp)
+  401437:	8b 4b 14             	mov    0x14(%rbx),%ecx
+  40143a:	89 4c 24 24          	mov    %ecx,0x24(%rsp)
+  40143e:	4d 89 ec             	mov    %r13,%r12
+  401441:	49 d1 ec             	shr    %r12
+  401444:	4a 8d 1c e5 00 00 00 	lea    0x0(,%r12,8),%rbx
+  40144b:	00 
+  40144c:	48 89 df             	mov    %rbx,%rdi
+  40144f:	88 44 24 07          	mov    %al,0x7(%rsp)
+  401453:	e8 68 fc ff ff       	callq  4010c0 <malloc@plt>
+  401458:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+  40145d:	49 8b 36             	mov    (%r14),%rsi
+  401460:	48 89 c7             	mov    %rax,%rdi
+  401463:	48 89 da             	mov    %rbx,%rdx
+  401466:	e8 35 fc ff ff       	callq  4010a0 <memcpy@plt>
+  40146b:	4c 89 6c 24 28       	mov    %r13,0x28(%rsp)
+  401470:	4c 89 f5             	mov    %r14,%rbp
+  401473:	4d 29 e5             	sub    %r12,%r13
+  401476:	4e 8d 34 ed 00 00 00 	lea    0x0(,%r13,8),%r14
+  40147d:	00 
+  40147e:	4c 89 f7             	mov    %r14,%rdi
+  401481:	e8 3a fc ff ff       	callq  4010c0 <malloc@plt>
+  401486:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
+  40148b:	48 03 5d 00          	add    0x0(%rbp),%rbx
+  40148f:	48 89 c7             	mov    %rax,%rdi
+  401492:	48 89 de             	mov    %rbx,%rsi
+  401495:	4c 89 f2             	mov    %r14,%rdx
+  401498:	e8 03 fc ff ff       	callq  4010a0 <memcpy@plt>
+  40149d:	8a 44 24 07          	mov    0x7(%rsp),%al
+  4014a1:	89 c3                	mov    %eax,%ebx
+  4014a3:	84 c0                	test   %al,%al
+  4014a5:	74 09                	je     4014b0 <par_merge_sort+0xb0>
+  4014a7:	48 8b 7d 00          	mov    0x0(%rbp),%rdi
+  4014ab:	e8 80 fb ff ff       	callq  401030 <free@plt>
+  4014b0:	48 89 6c 24 08       	mov    %rbp,0x8(%rsp)
+  4014b5:	41 83 c7 ff          	add    $0xffffffff,%r15d
+  4014b9:	bf 19 00 00 00       	mov    $0x19,%edi
+  4014be:	e8 fd fb ff ff       	callq  4010c0 <malloc@plt>
+  4014c3:	48 8d 4c 24 18       	lea    0x18(%rsp),%rcx
+  4014c8:	48 89 08             	mov    %rcx,(%rax)
+  4014cb:	4c 89 60 08          	mov    %r12,0x8(%rax)
+  4014cf:	44 89 78 10          	mov    %r15d,0x10(%rax)
+  4014d3:	8b 6c 24 24          	mov    0x24(%rsp),%ebp
+  4014d7:	89 68 14             	mov    %ebp,0x14(%rax)
+  4014da:	88 58 18             	mov    %bl,0x18(%rax)
+  4014dd:	48 8d 7c 24 40       	lea    0x40(%rsp),%rdi
+  4014e2:	ba 00 14 40 00       	mov    $0x401400,%edx
+  4014e7:	31 f6                	xor    %esi,%esi
+  4014e9:	48 89 c1             	mov    %rax,%rcx
+  4014ec:	e8 4f fb ff ff       	callq  401040 <pthread_create@plt>
+  4014f1:	bf 19 00 00 00       	mov    $0x19,%edi
+  4014f6:	e8 c5 fb ff ff       	callq  4010c0 <malloc@plt>
+  4014fb:	48 8d 4c 24 10       	lea    0x10(%rsp),%rcx
+  401500:	48 89 08             	mov    %rcx,(%rax)
+  401503:	4c 89 68 08          	mov    %r13,0x8(%rax)
+  401507:	44 89 78 10          	mov    %r15d,0x10(%rax)
+  40150b:	89 68 14             	mov    %ebp,0x14(%rax)
+  40150e:	88 58 18             	mov    %bl,0x18(%rax)
+  401511:	48 8d 7c 24 38       	lea    0x38(%rsp),%rdi
+  401516:	ba 00 14 40 00       	mov    $0x401400,%edx
+  40151b:	31 f6                	xor    %esi,%esi
+  40151d:	48 89 c1             	mov    %rax,%rcx
+  401520:	e8 1b fb ff ff       	callq  401040 <pthread_create@plt>
+  401525:	48 8b 7c 24 40       	mov    0x40(%rsp),%rdi
+  40152a:	31 f6                	xor    %esi,%esi
+  40152c:	e8 9f fb ff ff       	callq  4010d0 <pthread_join@plt>
+  401531:	48 8b 7c 24 38       	mov    0x38(%rsp),%rdi
+  401536:	31 f6                	xor    %esi,%esi
+  401538:	e8 93 fb ff ff       	callq  4010d0 <pthread_join@plt>
+  40153d:	84 db                	test   %bl,%bl
+  40153f:	74 16                	je     401557 <par_merge_sort+0x157>
+  401541:	48 8b 7c 24 28       	mov    0x28(%rsp),%rdi
+  401546:	48 c1 e7 03          	shl    $0x3,%rdi
+  40154a:	e8 71 fb ff ff       	callq  4010c0 <malloc@plt>
+  40154f:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+  401554:	48 89 01             	mov    %rax,(%rcx)
+  401557:	4d 85 ed             	test   %r13,%r13
+  40155a:	41 0f 95 c6          	setne  %r14b
+  40155e:	0f 84 fe 00 00 00    	je     401662 <par_merge_sort+0x262>
+  401564:	4c 8b 44 24 18       	mov    0x18(%rsp),%r8
+  401569:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+  40156e:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  401573:	48 8b 30             	mov    (%rax),%rsi
+  401576:	31 ed                	xor    %ebp,%ebp
+  401578:	31 c0                	xor    %eax,%eax
+  40157a:	31 db                	xor    %ebx,%ebx
+  40157c:	0f 1f 40 00          	nopl   0x0(%rax)
+  401580:	49 8b 0c c0          	mov    (%r8,%rax,8),%rcx
+  401584:	48 8b 3c ea          	mov    (%rdx,%rbp,8),%rdi
+  401588:	48 39 f9             	cmp    %rdi,%rcx
+  40158b:	73 13                	jae    4015a0 <par_merge_sort+0x1a0>
+  40158d:	48 89 0c de          	mov    %rcx,(%rsi,%rbx,8)
+  401591:	48 83 c0 01          	add    $0x1,%rax
+  401595:	eb 11                	jmp    4015a8 <par_merge_sort+0x1a8>
+  401597:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  40159e:	00 00 
+  4015a0:	48 89 3c de          	mov    %rdi,(%rsi,%rbx,8)
+  4015a4:	48 83 c5 01          	add    $0x1,%rbp
+  4015a8:	48 83 c3 01          	add    $0x1,%rbx
+  4015ac:	49 39 ed             	cmp    %rbp,%r13
+  4015af:	41 0f 97 c6          	seta   %r14b
+  4015b3:	49 39 c4             	cmp    %rax,%r12
+  4015b6:	0f 97 c1             	seta   %cl
+  4015b9:	76 05                	jbe    4015c0 <par_merge_sort+0x1c0>
+  4015bb:	49 39 ed             	cmp    %rbp,%r13
+  4015be:	77 c0                	ja     401580 <par_merge_sort+0x180>
+  4015c0:	84 c9                	test   %cl,%cl
+  4015c2:	74 2c                	je     4015f0 <par_merge_sort+0x1f0>
+  4015c4:	48 8d 3c dd 00 00 00 	lea    0x0(,%rbx,8),%rdi
+  4015cb:	00 
+  4015cc:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+  4015d1:	48 03 39             	add    (%rcx),%rdi
+  4015d4:	48 8d 34 c5 00 00 00 	lea    0x0(,%rax,8),%rsi
+  4015db:	00 
+  4015dc:	48 03 74 24 18       	add    0x18(%rsp),%rsi
+  4015e1:	49 29 c4             	sub    %rax,%r12
+  4015e4:	49 c1 e4 03          	shl    $0x3,%r12
+  4015e8:	4c 89 e2             	mov    %r12,%rdx
+  4015eb:	e8 b0 fa ff ff       	callq  4010a0 <memcpy@plt>
+  4015f0:	45 84 f6             	test   %r14b,%r14b
+  4015f3:	74 2b                	je     401620 <par_merge_sort+0x220>
+  4015f5:	48 c1 e3 03          	shl    $0x3,%rbx
+  4015f9:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  4015fe:	48 03 18             	add    (%rax),%rbx
+  401601:	48 8d 34 ed 00 00 00 	lea    0x0(,%rbp,8),%rsi
+  401608:	00 
+  401609:	48 03 74 24 10       	add    0x10(%rsp),%rsi
+  40160e:	49 29 ed             	sub    %rbp,%r13
+  401611:	49 c1 e5 03          	shl    $0x3,%r13
+  401615:	48 89 df             	mov    %rbx,%rdi
+  401618:	4c 89 ea             	mov    %r13,%rdx
+  40161b:	e8 80 fa ff ff       	callq  4010a0 <memcpy@plt>
+  401620:	48 8b 7c 24 30       	mov    0x30(%rsp),%rdi
+  401625:	e8 06 fa ff ff       	callq  401030 <free@plt>
+  40162a:	48 8b 7c 24 18       	mov    0x18(%rsp),%rdi
+  40162f:	e8 fc f9 ff ff       	callq  401030 <free@plt>
+  401634:	48 8b 7c 24 10       	mov    0x10(%rsp),%rdi
+  401639:	eb 11                	jmp    40164c <par_merge_sort+0x24c>
+  40163b:	0f be d0             	movsbl %al,%edx
+  40163e:	4c 89 f7             	mov    %r14,%rdi
+  401641:	4c 89 ee             	mov    %r13,%rsi
+  401644:	e8 97 fb ff ff       	callq  4011e0 <seq_merge_sort>
+  401649:	48 89 df             	mov    %rbx,%rdi
+  40164c:	e8 df f9 ff ff       	callq  401030 <free@plt>
+  401651:	31 c0                	xor    %eax,%eax
+  401653:	48 83 c4 48          	add    $0x48,%rsp
+  401657:	5b                   	pop    %rbx
+  401658:	41 5c                	pop    %r12
+  40165a:	41 5d                	pop    %r13
+  40165c:	41 5e                	pop    %r14
+  40165e:	41 5f                	pop    %r15
+  401660:	5d                   	pop    %rbp
+  401661:	c3                   	retq   
+  401662:	31 db                	xor    %ebx,%ebx
+  401664:	b1 01                	mov    $0x1,%cl
+  401666:	31 c0                	xor    %eax,%eax
+  401668:	31 ed                	xor    %ebp,%ebp
+  40166a:	84 c9                	test   %cl,%cl
+  40166c:	0f 85 52 ff ff ff    	jne    4015c4 <par_merge_sort+0x1c4>
+  401672:	e9 79 ff ff ff       	jmpq   4015f0 <par_merge_sort+0x1f0>
+  401677:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  40167e:	00 00 
+
+0000000000401680 <better_par_merge_sort>:
+  401680:	55                   	push   %rbp
+  401681:	48 89 e5             	mov    %rsp,%rbp
+  401684:	41 57                	push   %r15
+  401686:	41 56                	push   %r14
+  401688:	41 55                	push   %r13
+  40168a:	41 54                	push   %r12
+  40168c:	53                   	push   %rbx
+  40168d:	48 83 ec 78          	sub    $0x78,%rsp
+  401691:	48 89 fb             	mov    %rdi,%rbx
+  401694:	4c 8b 27             	mov    (%rdi),%r12
+  401697:	48 8b 77 08          	mov    0x8(%rdi),%rsi
+  40169b:	8b 4f 10             	mov    0x10(%rdi),%ecx
+  40169e:	8a 47 18             	mov    0x18(%rdi),%al
+  4016a1:	85 c9                	test   %ecx,%ecx
+  4016a3:	74 5c                	je     401701 <better_par_merge_sort+0x81>
+  4016a5:	48 83 fe 02          	cmp    $0x2,%rsi
+  4016a9:	0f 82 97 04 00 00    	jb     401b46 <better_par_merge_sort+0x4c6>
+  4016af:	89 4d bc             	mov    %ecx,-0x44(%rbp)
+  4016b2:	88 45 d7             	mov    %al,-0x29(%rbp)
+  4016b5:	48 89 75 b0          	mov    %rsi,-0x50(%rbp)
+  4016b9:	8b 43 14             	mov    0x14(%rbx),%eax
+  4016bc:	48 89 45 c8          	mov    %rax,-0x38(%rbp)
+  4016c0:	4c 63 f0             	movslq %eax,%r14
+  4016c3:	4e 8d 2c f5 00 00 00 	lea    0x0(,%r14,8),%r13
+  4016ca:	00 
+  4016cb:	4c 89 ef             	mov    %r13,%rdi
+  4016ce:	e8 ed f9 ff ff       	callq  4010c0 <malloc@plt>
+  4016d3:	49 89 c7             	mov    %rax,%r15
+  4016d6:	45 85 f6             	test   %r14d,%r14d
+  4016d9:	48 89 9d 70 ff ff ff 	mov    %rbx,-0x90(%rbp)
+  4016e0:	7e 37                	jle    401719 <better_par_merge_sort+0x99>
+  4016e2:	4c 8b 45 b0          	mov    -0x50(%rbp),%r8
+  4016e6:	4c 89 c0             	mov    %r8,%rax
+  4016e9:	31 d2                	xor    %edx,%edx
+  4016eb:	49 f7 f6             	div    %r14
+  4016ee:	41 83 fe 03          	cmp    $0x3,%r14d
+  4016f2:	77 34                	ja     401728 <better_par_merge_sort+0xa8>
+  4016f4:	31 c9                	xor    %ecx,%ecx
+  4016f6:	31 d2                	xor    %edx,%edx
+  4016f8:	48 8b 5d c8          	mov    -0x38(%rbp),%rbx
+  4016fc:	e9 2f 01 00 00       	jmpq   401830 <better_par_merge_sort+0x1b0>
+  401701:	0f be d0             	movsbl %al,%edx
+  401704:	4c 89 e7             	mov    %r12,%rdi
+  401707:	e8 d4 fa ff ff       	callq  4011e0 <seq_merge_sort>
+  40170c:	48 89 df             	mov    %rbx,%rdi
+  40170f:	e8 1c f9 ff ff       	callq  401030 <free@plt>
+  401714:	e9 2d 04 00 00       	jmpq   401b46 <better_par_merge_sort+0x4c6>
+  401719:	31 d2                	xor    %edx,%edx
+  40171b:	4c 8b 45 b0          	mov    -0x50(%rbp),%r8
+  40171f:	48 8b 5d c8          	mov    -0x38(%rbp),%rbx
+  401723:	e9 18 01 00 00       	jmpq   401840 <better_par_merge_sort+0x1c0>
+  401728:	48 8b 4d c8          	mov    -0x38(%rbp),%rcx
+  40172c:	83 e1 fc             	and    $0xfffffffc,%ecx
+  40172f:	66 48 0f 6e c0       	movq   %rax,%xmm0
+  401734:	66 0f 70 c0 44       	pshufd $0x44,%xmm0,%xmm0
+  401739:	48 8d 79 fc          	lea    -0x4(%rcx),%rdi
+  40173d:	48 89 fe             	mov    %rdi,%rsi
+  401740:	48 c1 ee 02          	shr    $0x2,%rsi
+  401744:	48 83 c6 01          	add    $0x1,%rsi
+  401748:	89 f2                	mov    %esi,%edx
+  40174a:	83 e2 03             	and    $0x3,%edx
+  40174d:	48 83 ff 0c          	cmp    $0xc,%rdi
+  401751:	73 0c                	jae    40175f <better_par_merge_sort+0xdf>
+  401753:	66 0f ef c9          	pxor   %xmm1,%xmm1
+  401757:	31 f6                	xor    %esi,%esi
+  401759:	66 0f ef d2          	pxor   %xmm2,%xmm2
+  40175d:	eb 72                	jmp    4017d1 <better_par_merge_sort+0x151>
+  40175f:	48 89 d7             	mov    %rdx,%rdi
+  401762:	48 29 f7             	sub    %rsi,%rdi
+  401765:	66 0f ef c9          	pxor   %xmm1,%xmm1
+  401769:	31 f6                	xor    %esi,%esi
+  40176b:	66 0f ef d2          	pxor   %xmm2,%xmm2
+  40176f:	90                   	nop
+  401770:	f3 41 0f 7f 04 f7    	movdqu %xmm0,(%r15,%rsi,8)
+  401776:	f3 41 0f 7f 44 f7 10 	movdqu %xmm0,0x10(%r15,%rsi,8)
+  40177d:	66 0f d4 c8          	paddq  %xmm0,%xmm1
+  401781:	66 0f d4 d0          	paddq  %xmm0,%xmm2
+  401785:	f3 41 0f 7f 44 f7 20 	movdqu %xmm0,0x20(%r15,%rsi,8)
+  40178c:	f3 41 0f 7f 44 f7 30 	movdqu %xmm0,0x30(%r15,%rsi,8)
+  401793:	66 0f d4 c8          	paddq  %xmm0,%xmm1
+  401797:	66 0f d4 d0          	paddq  %xmm0,%xmm2
+  40179b:	f3 41 0f 7f 44 f7 40 	movdqu %xmm0,0x40(%r15,%rsi,8)
+  4017a2:	f3 41 0f 7f 44 f7 50 	movdqu %xmm0,0x50(%r15,%rsi,8)
+  4017a9:	66 0f d4 c8          	paddq  %xmm0,%xmm1
+  4017ad:	66 0f d4 d0          	paddq  %xmm0,%xmm2
+  4017b1:	f3 41 0f 7f 44 f7 60 	movdqu %xmm0,0x60(%r15,%rsi,8)
+  4017b8:	f3 41 0f 7f 44 f7 70 	movdqu %xmm0,0x70(%r15,%rsi,8)
+  4017bf:	66 0f d4 c8          	paddq  %xmm0,%xmm1
+  4017c3:	66 0f d4 d0          	paddq  %xmm0,%xmm2
+  4017c7:	48 83 c6 10          	add    $0x10,%rsi
+  4017cb:	48 83 c7 04          	add    $0x4,%rdi
+  4017cf:	75 9f                	jne    401770 <better_par_merge_sort+0xf0>
+  4017d1:	48 85 d2             	test   %rdx,%rdx
+  4017d4:	74 34                	je     40180a <better_par_merge_sort+0x18a>
+  4017d6:	49 8d 34 f7          	lea    (%r15,%rsi,8),%rsi
+  4017da:	48 83 c6 10          	add    $0x10,%rsi
+  4017de:	48 f7 da             	neg    %rdx
+  4017e1:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  4017e8:	00 00 00 
+  4017eb:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  4017f0:	f3 0f 7f 46 f0       	movdqu %xmm0,-0x10(%rsi)
+  4017f5:	f3 0f 7f 06          	movdqu %xmm0,(%rsi)
+  4017f9:	66 0f d4 c8          	paddq  %xmm0,%xmm1
+  4017fd:	66 0f d4 d0          	paddq  %xmm0,%xmm2
+  401801:	48 83 c6 20          	add    $0x20,%rsi
+  401805:	48 ff c2             	inc    %rdx
+  401808:	75 e6                	jne    4017f0 <better_par_merge_sort+0x170>
+  40180a:	66 0f d4 ca          	paddq  %xmm2,%xmm1
+  40180e:	66 0f 70 c1 4e       	pshufd $0x4e,%xmm1,%xmm0
+  401813:	66 0f d4 c1          	paddq  %xmm1,%xmm0
+  401817:	66 48 0f 7e c2       	movq   %xmm0,%rdx
+  40181c:	48 8b 5d c8          	mov    -0x38(%rbp),%rbx
+  401820:	48 39 d9             	cmp    %rbx,%rcx
+  401823:	74 1b                	je     401840 <better_par_merge_sort+0x1c0>
+  401825:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  40182c:	00 00 00 
+  40182f:	90                   	nop
+  401830:	49 89 04 cf          	mov    %rax,(%r15,%rcx,8)
+  401834:	48 01 c2             	add    %rax,%rdx
+  401837:	48 83 c1 01          	add    $0x1,%rcx
+  40183b:	48 39 cb             	cmp    %rcx,%rbx
+  40183e:	75 f0                	jne    401830 <better_par_merge_sort+0x1b0>
+  401840:	49 29 d0             	sub    %rdx,%r8
+  401843:	8d 43 ff             	lea    -0x1(%rbx),%eax
+  401846:	89 45 ac             	mov    %eax,-0x54(%rbp)
+  401849:	48 98                	cltq   
+  40184b:	4d 03 04 c7          	add    (%r15,%rax,8),%r8
+  40184f:	4c 89 45 88          	mov    %r8,-0x78(%rbp)
+  401853:	48 89 45 90          	mov    %rax,-0x70(%rbp)
+  401857:	4d 89 04 c7          	mov    %r8,(%r15,%rax,8)
+  40185b:	4c 89 ad 78 ff ff ff 	mov    %r13,-0x88(%rbp)
+  401862:	4c 89 ef             	mov    %r13,%rdi
+  401865:	e8 56 f8 ff ff       	callq  4010c0 <malloc@plt>
+  40186a:	48 89 45 c0          	mov    %rax,-0x40(%rbp)
+  40186e:	85 db                	test   %ebx,%ebx
+  401870:	4d 89 e5             	mov    %r12,%r13
+  401873:	7e 4e                	jle    4018c3 <better_par_merge_sort+0x243>
+  401875:	45 31 e4             	xor    %r12d,%r12d
+  401878:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  40187f:	00 
+  401880:	4b 8b 1c e7          	mov    (%r15,%r12,8),%rbx
+  401884:	4c 8d 34 dd 00 00 00 	lea    0x0(,%rbx,8),%r14
+  40188b:	00 
+  40188c:	4c 89 f7             	mov    %r14,%rdi
+  40188f:	e8 2c f8 ff ff       	callq  4010c0 <malloc@plt>
+  401894:	48 8b 4d c0          	mov    -0x40(%rbp),%rcx
+  401898:	4a 89 04 e1          	mov    %rax,(%rcx,%r12,8)
+  40189c:	49 0f af dc          	imul   %r12,%rbx
+  4018a0:	48 c1 e3 03          	shl    $0x3,%rbx
+  4018a4:	49 03 5d 00          	add    0x0(%r13),%rbx
+  4018a8:	48 89 c7             	mov    %rax,%rdi
+  4018ab:	48 89 de             	mov    %rbx,%rsi
+  4018ae:	48 8b 5d c8          	mov    -0x38(%rbp),%rbx
+  4018b2:	4c 89 f2             	mov    %r14,%rdx
+  4018b5:	e8 e6 f7 ff ff       	callq  4010a0 <memcpy@plt>
+  4018ba:	49 83 c4 01          	add    $0x1,%r12
+  4018be:	4c 39 e3             	cmp    %r12,%rbx
+  4018c1:	75 bd                	jne    401880 <better_par_merge_sort+0x200>
+  4018c3:	4c 89 6d a0          	mov    %r13,-0x60(%rbp)
+  4018c7:	44 8a 75 d7          	mov    -0x29(%rbp),%r14b
+  4018cb:	45 84 f6             	test   %r14b,%r14b
+  4018ce:	74 0c                	je     4018dc <better_par_merge_sort+0x25c>
+  4018d0:	48 8b 45 a0          	mov    -0x60(%rbp),%rax
+  4018d4:	48 8b 38             	mov    (%rax),%rdi
+  4018d7:	e8 54 f7 ff ff       	callq  401030 <free@plt>
+  4018dc:	48 89 65 80          	mov    %rsp,-0x80(%rbp)
+  4018e0:	48 89 e1             	mov    %rsp,%rcx
+  4018e3:	48 8d 04 dd 0f 00 00 	lea    0xf(,%rbx,8),%rax
+  4018ea:	00 
+  4018eb:	48 83 e0 f0          	and    $0xfffffffffffffff0,%rax
+  4018ef:	48 29 c1             	sub    %rax,%rcx
+  4018f2:	48 89 4d 98          	mov    %rcx,-0x68(%rbp)
+  4018f6:	48 89 cc             	mov    %rcx,%rsp
+  4018f9:	83 45 bc ff          	addl   $0xffffffff,-0x44(%rbp)
+  4018fd:	83 fb 02             	cmp    $0x2,%ebx
+  401900:	7c 70                	jl     401972 <better_par_merge_sort+0x2f2>
+  401902:	8b 45 ac             	mov    -0x54(%rbp),%eax
+  401905:	48 89 85 68 ff ff ff 	mov    %rax,-0x98(%rbp)
+  40190c:	45 31 e4             	xor    %r12d,%r12d
+  40190f:	48 8b 5d 98          	mov    -0x68(%rbp),%rbx
+  401913:	4c 8b 6d c0          	mov    -0x40(%rbp),%r13
+  401917:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  40191e:	00 00 
+  401920:	4f 8b 34 e7          	mov    (%r15,%r12,8),%r14
+  401924:	bf 19 00 00 00       	mov    $0x19,%edi
+  401929:	e8 92 f7 ff ff       	callq  4010c0 <malloc@plt>
+  40192e:	4c 89 28             	mov    %r13,(%rax)
+  401931:	4c 89 70 08          	mov    %r14,0x8(%rax)
+  401935:	44 0f b6 75 d7       	movzbl -0x29(%rbp),%r14d
+  40193a:	8b 4d bc             	mov    -0x44(%rbp),%ecx
+  40193d:	89 48 10             	mov    %ecx,0x10(%rax)
+  401940:	48 8b 4d c8          	mov    -0x38(%rbp),%rcx
+  401944:	89 48 14             	mov    %ecx,0x14(%rax)
+  401947:	44 88 70 18          	mov    %r14b,0x18(%rax)
+  40194b:	ba 80 16 40 00       	mov    $0x401680,%edx
+  401950:	48 89 df             	mov    %rbx,%rdi
+  401953:	31 f6                	xor    %esi,%esi
+  401955:	48 89 c1             	mov    %rax,%rcx
+  401958:	e8 e3 f6 ff ff       	callq  401040 <pthread_create@plt>
+  40195d:	49 83 c4 01          	add    $0x1,%r12
+  401961:	49 83 c5 08          	add    $0x8,%r13
+  401965:	48 83 c3 08          	add    $0x8,%rbx
+  401969:	4c 39 a5 68 ff ff ff 	cmp    %r12,-0x98(%rbp)
+  401970:	75 ae                	jne    401920 <better_par_merge_sort+0x2a0>
+  401972:	48 8b 45 c0          	mov    -0x40(%rbp),%rax
+  401976:	48 8b 4d 90          	mov    -0x70(%rbp),%rcx
+  40197a:	48 8d 1c c8          	lea    (%rax,%rcx,8),%rbx
+  40197e:	bf 19 00 00 00       	mov    $0x19,%edi
+  401983:	e8 38 f7 ff ff       	callq  4010c0 <malloc@plt>
+  401988:	48 89 18             	mov    %rbx,(%rax)
+  40198b:	48 8b 4d 88          	mov    -0x78(%rbp),%rcx
+  40198f:	48 89 48 08          	mov    %rcx,0x8(%rax)
+  401993:	8b 4d bc             	mov    -0x44(%rbp),%ecx
+  401996:	89 48 10             	mov    %ecx,0x10(%rax)
+  401999:	4c 8b 6d c8          	mov    -0x38(%rbp),%r13
+  40199d:	44 89 68 14          	mov    %r13d,0x14(%rax)
+  4019a1:	44 88 70 18          	mov    %r14b,0x18(%rax)
+  4019a5:	48 89 c7             	mov    %rax,%rdi
+  4019a8:	e8 d3 fc ff ff       	callq  401680 <better_par_merge_sort>
+  4019ad:	41 83 fd 02          	cmp    $0x2,%r13d
+  4019b1:	4c 8b 65 98          	mov    -0x68(%rbp),%r12
+  4019b5:	7c 1d                	jl     4019d4 <better_par_merge_sort+0x354>
+  4019b7:	44 8b 75 ac          	mov    -0x54(%rbp),%r14d
+  4019bb:	31 db                	xor    %ebx,%ebx
+  4019bd:	0f 1f 00             	nopl   (%rax)
+  4019c0:	49 8b 3c dc          	mov    (%r12,%rbx,8),%rdi
+  4019c4:	31 f6                	xor    %esi,%esi
+  4019c6:	e8 05 f7 ff ff       	callq  4010d0 <pthread_join@plt>
+  4019cb:	48 83 c3 01          	add    $0x1,%rbx
+  4019cf:	49 39 de             	cmp    %rbx,%r14
+  4019d2:	75 ec                	jne    4019c0 <better_par_merge_sort+0x340>
+  4019d4:	80 7d d7 00          	cmpb   $0x0,-0x29(%rbp)
+  4019d8:	4c 8b 75 b0          	mov    -0x50(%rbp),%r14
+  4019dc:	48 8b 5d a0          	mov    -0x60(%rbp),%rbx
+  4019e0:	74 10                	je     4019f2 <better_par_merge_sort+0x372>
+  4019e2:	4a 8d 3c f5 00 00 00 	lea    0x0(,%r14,8),%rdi
+  4019e9:	00 
+  4019ea:	e8 d1 f6 ff ff       	callq  4010c0 <malloc@plt>
+  4019ef:	48 89 03             	mov    %rax,(%rbx)
+  4019f2:	4c 8b a5 78 ff ff ff 	mov    -0x88(%rbp),%r12
+  4019f9:	4c 89 e7             	mov    %r12,%rdi
+  4019fc:	e8 bf f6 ff ff       	callq  4010c0 <malloc@plt>
+  401a01:	4c 89 f3             	mov    %r14,%rbx
+  401a04:	49 89 c6             	mov    %rax,%r14
+  401a07:	48 89 c7             	mov    %rax,%rdi
+  401a0a:	31 f6                	xor    %esi,%esi
+  401a0c:	4c 89 e2             	mov    %r12,%rdx
+  401a0f:	e8 5c f6 ff ff       	callq  401070 <memset@plt>
+  401a14:	48 85 db             	test   %rbx,%rbx
+  401a17:	0f 84 e4 00 00 00    	je     401b01 <better_par_merge_sort+0x481>
+  401a1d:	49 89 db             	mov    %rbx,%r11
+  401a20:	49 b8 33 33 33 33 33 	movabs $0x333333333333333,%r8
+  401a27:	33 33 03 
+  401a2a:	48 8b 45 a0          	mov    -0x60(%rbp),%rax
+  401a2e:	4c 8b 10             	mov    (%rax),%r10
+  401a31:	45 89 e9             	mov    %r13d,%r9d
+  401a34:	41 83 e1 01          	and    $0x1,%r9d
+  401a38:	44 89 ee             	mov    %r13d,%esi
+  401a3b:	83 e6 fe             	and    $0xfffffffe,%esi
+  401a3e:	45 31 e4             	xor    %r12d,%r12d
+  401a41:	eb 29                	jmp    401a6c <better_par_merge_sort+0x3ec>
+  401a43:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  401a4a:	00 00 00 
+  401a4d:	0f 1f 00             	nopl   (%rax)
+  401a50:	4c 89 c0             	mov    %r8,%rax
+  401a53:	4b 89 04 e2          	mov    %rax,(%r10,%r12,8)
+  401a57:	48 63 c3             	movslq %ebx,%rax
+  401a5a:	49 83 04 c6 01       	addq   $0x1,(%r14,%rax,8)
+  401a5f:	49 83 c4 01          	add    $0x1,%r12
+  401a63:	4d 39 dc             	cmp    %r11,%r12
+  401a66:	0f 84 95 00 00 00    	je     401b01 <better_par_merge_sort+0x481>
+  401a6c:	bb ff ff ff ff       	mov    $0xffffffff,%ebx
+  401a71:	45 85 ed             	test   %r13d,%r13d
+  401a74:	7e da                	jle    401a50 <better_par_merge_sort+0x3d0>
+  401a76:	31 d2                	xor    %edx,%edx
+  401a78:	4c 89 c0             	mov    %r8,%rax
+  401a7b:	41 83 fd 01          	cmp    $0x1,%r13d
+  401a7f:	75 38                	jne    401ab9 <better_par_merge_sort+0x439>
+  401a81:	4d 85 c9             	test   %r9,%r9
+  401a84:	74 cd                	je     401a53 <better_par_merge_sort+0x3d3>
+  401a86:	4d 8b 1c d6          	mov    (%r14,%rdx,8),%r11
+  401a8a:	4d 3b 1c d7          	cmp    (%r15,%rdx,8),%r11
+  401a8e:	73 16                	jae    401aa6 <better_par_merge_sort+0x426>
+  401a90:	48 8b 4d c0          	mov    -0x40(%rbp),%rcx
+  401a94:	48 8b 0c d1          	mov    (%rcx,%rdx,8),%rcx
+  401a98:	4a 8b 0c d9          	mov    (%rcx,%r11,8),%rcx
+  401a9c:	48 39 c1             	cmp    %rax,%rcx
+  401a9f:	48 0f 42 c1          	cmovb  %rcx,%rax
+  401aa3:	0f 42 da             	cmovb  %edx,%ebx
+  401aa6:	4c 8b 5d b0          	mov    -0x50(%rbp),%r11
+  401aaa:	eb a7                	jmp    401a53 <better_par_merge_sort+0x3d3>
+  401aac:	0f 1f 40 00          	nopl   0x0(%rax)
+  401ab0:	48 83 c2 02          	add    $0x2,%rdx
+  401ab4:	48 39 d6             	cmp    %rdx,%rsi
+  401ab7:	74 c8                	je     401a81 <better_par_merge_sort+0x401>
+  401ab9:	49 8b 0c d6          	mov    (%r14,%rdx,8),%rcx
+  401abd:	49 3b 0c d7          	cmp    (%r15,%rdx,8),%rcx
+  401ac1:	73 16                	jae    401ad9 <better_par_merge_sort+0x459>
+  401ac3:	48 8b 7d c0          	mov    -0x40(%rbp),%rdi
+  401ac7:	48 8b 3c d7          	mov    (%rdi,%rdx,8),%rdi
+  401acb:	48 8b 0c cf          	mov    (%rdi,%rcx,8),%rcx
+  401acf:	48 39 c1             	cmp    %rax,%rcx
+  401ad2:	48 0f 42 c1          	cmovb  %rcx,%rax
+  401ad6:	0f 42 da             	cmovb  %edx,%ebx
+  401ad9:	49 8b 4c d6 08       	mov    0x8(%r14,%rdx,8),%rcx
+  401ade:	49 3b 4c d7 08       	cmp    0x8(%r15,%rdx,8),%rcx
+  401ae3:	73 cb                	jae    401ab0 <better_par_merge_sort+0x430>
+  401ae5:	48 8b 7d c0          	mov    -0x40(%rbp),%rdi
+  401ae9:	48 8b 7c d7 08       	mov    0x8(%rdi,%rdx,8),%rdi
+  401aee:	48 8b 0c cf          	mov    (%rdi,%rcx,8),%rcx
+  401af2:	8d 7a 01             	lea    0x1(%rdx),%edi
+  401af5:	48 39 c1             	cmp    %rax,%rcx
+  401af8:	48 0f 42 c1          	cmovb  %rcx,%rax
+  401afc:	0f 42 df             	cmovb  %edi,%ebx
+  401aff:	eb af                	jmp    401ab0 <better_par_merge_sort+0x430>
+  401b01:	48 8b bd 70 ff ff ff 	mov    -0x90(%rbp),%rdi
+  401b08:	e8 23 f5 ff ff       	callq  401030 <free@plt>
+  401b0d:	4c 89 ff             	mov    %r15,%rdi
+  401b10:	e8 1b f5 ff ff       	callq  401030 <free@plt>
+  401b15:	45 85 ed             	test   %r13d,%r13d
+  401b18:	4c 8b 7d c0          	mov    -0x40(%rbp),%r15
+  401b1c:	7e 14                	jle    401b32 <better_par_merge_sort+0x4b2>
+  401b1e:	31 db                	xor    %ebx,%ebx
+  401b20:	49 8b 3c df          	mov    (%r15,%rbx,8),%rdi
+  401b24:	e8 07 f5 ff ff       	callq  401030 <free@plt>
+  401b29:	48 83 c3 01          	add    $0x1,%rbx
+  401b2d:	49 39 dd             	cmp    %rbx,%r13
+  401b30:	75 ee                	jne    401b20 <better_par_merge_sort+0x4a0>
+  401b32:	4c 89 ff             	mov    %r15,%rdi
+  401b35:	e8 f6 f4 ff ff       	callq  401030 <free@plt>
+  401b3a:	4c 89 f7             	mov    %r14,%rdi
+  401b3d:	e8 ee f4 ff ff       	callq  401030 <free@plt>
+  401b42:	48 8b 65 80          	mov    -0x80(%rbp),%rsp
+  401b46:	31 c0                	xor    %eax,%eax
+  401b48:	48 8d 65 d8          	lea    -0x28(%rbp),%rsp
+  401b4c:	5b                   	pop    %rbx
+  401b4d:	41 5c                	pop    %r12
+  401b4f:	41 5d                	pop    %r13
+  401b51:	41 5e                	pop    %r14
+  401b53:	41 5f                	pop    %r15
+  401b55:	5d                   	pop    %rbp
+  401b56:	c3                   	retq   
+  401b57:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)
+  401b5e:	00 00 
+
+0000000000401b60 <generateData>:
+  401b60:	41 57                	push   %r15
+  401b62:	41 56                	push   %r14
+  401b64:	53                   	push   %rbx
+  401b65:	49 89 f7             	mov    %rsi,%r15
+  401b68:	49 89 fe             	mov    %rdi,%r14
+  401b6b:	31 ff                	xor    %edi,%edi
+  401b6d:	e8 3e f5 ff ff       	callq  4010b0 <time@plt>
+  401b72:	89 c7                	mov    %eax,%edi
+  401b74:	e8 07 f5 ff ff       	callq  401080 <srand@plt>
+  401b79:	4d 85 ff             	test   %r15,%r15
+  401b7c:	74 19                	je     401b97 <generateData+0x37>
+  401b7e:	31 db                	xor    %ebx,%ebx
+  401b80:	e8 5b f5 ff ff       	callq  4010e0 <rand@plt>
+  401b85:	48 98                	cltq   
+  401b87:	49 8b 0e             	mov    (%r14),%rcx
+  401b8a:	48 89 04 d9          	mov    %rax,(%rcx,%rbx,8)
+  401b8e:	48 83 c3 01          	add    $0x1,%rbx
+  401b92:	49 39 df             	cmp    %rbx,%r15
+  401b95:	75 e9                	jne    401b80 <generateData+0x20>
+  401b97:	5b                   	pop    %rbx
+  401b98:	41 5e                	pop    %r14
+  401b9a:	41 5f                	pop    %r15
+  401b9c:	c3                   	retq   
+  401b9d:	0f 1f 00             	nopl   (%rax)
+
+0000000000401ba0 <isSorted>:
+  401ba0:	b8 01 00 00 00       	mov    $0x1,%eax
+  401ba5:	48 83 fe 02          	cmp    $0x2,%rsi
+  401ba9:	72 24                	jb     401bcf <isSorted+0x2f>
+  401bab:	48 8b 0f             	mov    (%rdi),%rcx
+  401bae:	ba 01 00 00 00       	mov    $0x1,%edx
+  401bb3:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  401bba:	00 00 00 
+  401bbd:	0f 1f 00             	nopl   (%rax)
+  401bc0:	48 39 0c d7          	cmp    %rcx,(%rdi,%rdx,8)
+  401bc4:	72 0a                	jb     401bd0 <isSorted+0x30>
+  401bc6:	48 83 c2 01          	add    $0x1,%rdx
+  401bca:	48 39 d6             	cmp    %rdx,%rsi
+  401bcd:	75 f1                	jne    401bc0 <isSorted+0x20>
+  401bcf:	c3                   	retq   
+  401bd0:	31 c0                	xor    %eax,%eax
+  401bd2:	c3                   	retq   
+  401bd3:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  401bda:	00 00 00 
+  401bdd:	0f 1f 00             	nopl   (%rax)
+
+0000000000401be0 <main>:
+  401be0:	55                   	push   %rbp
+  401be1:	41 57                	push   %r15
+  401be3:	41 56                	push   %r14
+  401be5:	41 55                	push   %r13
+  401be7:	41 54                	push   %r12
+  401be9:	53                   	push   %rbx
+  401bea:	48 83 ec 38          	sub    $0x38,%rsp
+  401bee:	48 89 f3             	mov    %rsi,%rbx
+  401bf1:	48 8b 7e 08          	mov    0x8(%rsi),%rdi
+  401bf5:	31 f6                	xor    %esi,%esi
+  401bf7:	ba 0a 00 00 00       	mov    $0xa,%edx
+  401bfc:	e8 8f f4 ff ff       	callq  401090 <strtol@plt>
+  401c01:	48 89 44 24 10       	mov    %rax,0x10(%rsp)
+  401c06:	48 8b 7b 10          	mov    0x10(%rbx),%rdi
+  401c0a:	31 f6                	xor    %esi,%esi
+  401c0c:	ba 0a 00 00 00       	mov    $0xa,%edx
+  401c11:	e8 7a f4 ff ff       	callq  401090 <strtol@plt>
+  401c16:	49 89 c7             	mov    %rax,%r15
+  401c19:	48 8b 7b 18          	mov    0x18(%rbx),%rdi
+  401c1d:	31 f6                	xor    %esi,%esi
+  401c1f:	ba 0a 00 00 00       	mov    $0xa,%edx
+  401c24:	e8 67 f4 ff ff       	callq  401090 <strtol@plt>
+  401c29:	49 89 c5             	mov    %rax,%r13
+  401c2c:	48 89 c3             	mov    %rax,%rbx
+  401c2f:	48 c1 e3 20          	shl    $0x20,%rbx
+  401c33:	4d 63 e5             	movslq %r13d,%r12
+  401c36:	48 89 df             	mov    %rbx,%rdi
+  401c39:	48 c1 ff 1d          	sar    $0x1d,%rdi
+  401c3d:	e8 7e f4 ff ff       	callq  4010c0 <malloc@plt>
+  401c42:	49 89 c6             	mov    %rax,%r14
+  401c45:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  401c4a:	31 ff                	xor    %edi,%edi
+  401c4c:	e8 5f f4 ff ff       	callq  4010b0 <time@plt>
+  401c51:	89 c7                	mov    %eax,%edi
+  401c53:	e8 28 f4 ff ff       	callq  401080 <srand@plt>
+  401c58:	48 85 db             	test   %rbx,%rbx
+  401c5b:	74 27                	je     401c84 <main+0xa4>
+  401c5d:	49 63 dd             	movslq %r13d,%rbx
+  401c60:	31 ed                	xor    %ebp,%ebp
+  401c62:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  401c69:	00 00 00 
+  401c6c:	0f 1f 40 00          	nopl   0x0(%rax)
+  401c70:	e8 6b f4 ff ff       	callq  4010e0 <rand@plt>
+  401c75:	48 98                	cltq   
+  401c77:	49 89 04 ee          	mov    %rax,(%r14,%rbp,8)
+  401c7b:	48 83 c5 01          	add    $0x1,%rbp
+  401c7f:	48 39 eb             	cmp    %rbp,%rbx
+  401c82:	75 ec                	jne    401c70 <main+0x90>
+  401c84:	48 8d 74 24 28       	lea    0x28(%rsp),%rsi
+  401c89:	bf 04 00 00 00       	mov    $0x4,%edi
+  401c8e:	e8 bd f3 ff ff       	callq  401050 <clock_gettime@plt>
+  401c93:	48 8d 7c 24 08       	lea    0x8(%rsp),%rdi
+  401c98:	4c 89 e6             	mov    %r12,%rsi
+  401c9b:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+  401ca0:	44 89 f9             	mov    %r15d,%ecx
+  401ca3:	41 b8 01 00 00 00    	mov    $0x1,%r8d
+  401ca9:	e8 12 f7 ff ff       	callq  4013c0 <proxy_args>
+  401cae:	48 89 c7             	mov    %rax,%rdi
+  401cb1:	e8 ca f9 ff ff       	callq  401680 <better_par_merge_sort>
+  401cb6:	48 8d 74 24 18       	lea    0x18(%rsp),%rsi
+  401cbb:	bf 04 00 00 00       	mov    $0x4,%edi
+  401cc0:	e8 8b f3 ff ff       	callq  401050 <clock_gettime@plt>
+  401cc5:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  401cca:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+  401ccf:	48 2b 4c 24 28       	sub    0x28(%rsp),%rcx
+  401cd4:	48 2b 44 24 30       	sub    0x30(%rsp),%rax
+  401cd9:	48 69 c9 e8 03 00 00 	imul   $0x3e8,%rcx,%rcx
+  401ce0:	48 ba db 34 b6 d7 82 	movabs $0x431bde82d7b634db,%rdx
+  401ce7:	de 1b 43 
+  401cea:	48 f7 ea             	imul   %rdx
+  401ced:	48 89 d0             	mov    %rdx,%rax
+  401cf0:	48 c1 e8 3f          	shr    $0x3f,%rax
+  401cf4:	48 c1 fa 12          	sar    $0x12,%rdx
+  401cf8:	48 8d 34 02          	lea    (%rdx,%rax,1),%rsi
+  401cfc:	48 01 ce             	add    %rcx,%rsi
+  401cff:	bf 04 20 40 00       	mov    $0x402004,%edi
+  401d04:	31 c0                	xor    %eax,%eax
+  401d06:	e8 55 f3 ff ff       	callq  401060 <printf@plt>
+  401d0b:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
+  401d10:	e8 1b f3 ff ff       	callq  401030 <free@plt>
+  401d15:	31 c0                	xor    %eax,%eax
+  401d17:	48 83 c4 38          	add    $0x38,%rsp
+  401d1b:	5b                   	pop    %rbx
+  401d1c:	41 5c                	pop    %r12
+  401d1e:	41 5d                	pop    %r13
+  401d20:	41 5e                	pop    %r14
+  401d22:	41 5f                	pop    %r15
+  401d24:	5d                   	pop    %rbp
+  401d25:	c3                   	retq   
+  401d26:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)
+  401d2d:	00 00 00 
+
+0000000000401d30 <__libc_csu_init>:
+  401d30:	f3 0f 1e fa          	endbr64 
+  401d34:	41 57                	push   %r15
+  401d36:	4c 8d 3d c3 20 00 00 	lea    0x20c3(%rip),%r15        # 403e00 <__frame_dummy_init_array_entry>
+  401d3d:	41 56                	push   %r14
+  401d3f:	49 89 d6             	mov    %rdx,%r14
+  401d42:	41 55                	push   %r13
+  401d44:	49 89 f5             	mov    %rsi,%r13
+  401d47:	41 54                	push   %r12
+  401d49:	41 89 fc             	mov    %edi,%r12d
+  401d4c:	55                   	push   %rbp
+  401d4d:	48 8d 2d b4 20 00 00 	lea    0x20b4(%rip),%rbp        # 403e08 <__do_global_dtors_aux_fini_array_entry>
+  401d54:	53                   	push   %rbx
+  401d55:	4c 29 fd             	sub    %r15,%rbp
+  401d58:	48 83 ec 08          	sub    $0x8,%rsp
+  401d5c:	e8 9f f2 ff ff       	callq  401000 <_init>
+  401d61:	48 c1 fd 03          	sar    $0x3,%rbp
+  401d65:	74 1f                	je     401d86 <__libc_csu_init+0x56>
+  401d67:	31 db                	xor    %ebx,%ebx
+  401d69:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+  401d70:	4c 89 f2             	mov    %r14,%rdx
+  401d73:	4c 89 ee             	mov    %r13,%rsi
+  401d76:	44 89 e7             	mov    %r12d,%edi
+  401d79:	41 ff 14 df          	callq  *(%r15,%rbx,8)
+  401d7d:	48 83 c3 01          	add    $0x1,%rbx
+  401d81:	48 39 dd             	cmp    %rbx,%rbp
+  401d84:	75 ea                	jne    401d70 <__libc_csu_init+0x40>
+  401d86:	48 83 c4 08          	add    $0x8,%rsp
+  401d8a:	5b                   	pop    %rbx
+  401d8b:	5d                   	pop    %rbp
+  401d8c:	41 5c                	pop    %r12
+  401d8e:	41 5d                	pop    %r13
+  401d90:	41 5e                	pop    %r14
+  401d92:	41 5f                	pop    %r15
+  401d94:	c3                   	retq   
+  401d95:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  401d9c:	00 00 00 00 
+
+0000000000401da0 <__libc_csu_fini>:
+  401da0:	f3 0f 1e fa          	endbr64 
+  401da4:	c3                   	retq   
+
+Disassembly of section .fini:
+
+0000000000401da8 <_fini>:
+  401da8:	f3 0f 1e fa          	endbr64 
+  401dac:	48 83 ec 08          	sub    $0x8,%rsp
+  401db0:	48 83 c4 08          	add    $0x8,%rsp
+  401db4:	c3                   	retq
