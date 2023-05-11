@@ -23,3 +23,7 @@ To generate charts comparing the gcc-default-results of two folders, run `python
 ## Generate object dumps
 
 Run `node create_obj_dumps.js /path/to/executables` for example `node create_obj_dumps.js ../executables/out_laptop`. This will put the object dumps in an obj-folder in the given directory.
+
+## Determining x86-64 version
+
+Run `./x86-test.sh`. This script will determine the version based on the availability of certain cpu-features. [Credit to author](https://unix.stackexchange.com/a/631226).
