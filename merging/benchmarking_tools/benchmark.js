@@ -14,7 +14,7 @@ async function run_benchmarks(compiler, depth, arity, data_size, repetitions) {
             "stat",
             "-e",
             metrics.join(","),
-            `./out/merge-${compiler}-bench.exe`,
+            `../executables/out/merge-${compiler}-bench.exe`,
             `${depth}`,
             `${arity}`,
             `${data_size}`,
